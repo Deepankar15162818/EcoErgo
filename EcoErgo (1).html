@@ -1,0 +1,2594 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>EcoErgo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* ===================== EcoErgo styles ===================== */
+:root {
+  --green: #246b45;
+  --dark-green: #17452f;
+  --light-green: #eaf4eb;
+  --cream: #fbfaf5;
+  --text: #20372a;
+  --muted: #5f6f65;
+  --border: #dce7dd;
+  --white: #ffffff;
+  --surface: #ffffff;
+  --pale: #f0f6ef;
+  --soft: #e5f0e3;
+  --accent: #79a86d;
+  --warn: #b3261e;
+  --shadow: 0 10px 35px rgba(23, 69, 47, 0.08);
+  --on-accent: #ffffff;
+  --toast-bg: #17452f;
+  --toast-fg: #fbfaf5;
+  --banner-bg: #fff4d6; --banner-fg: #5a4300; --banner-bd: #ecd9a0;
+  --banner-demo-bg: #ffe0b2; --banner-demo-fg: #5d3300; --banner-demo-bd: #f0c27a;
+  --svg-bg: #dcecf5;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --green: #5fbf8a;
+    --dark-green: #cfeedd;
+    --light-green: #1f3a2d;
+    --cream: #0f1a14;
+    --text: #e3efe7;
+    --muted: #9db3a4;
+    --border: #2b4336;
+    --white: #0f1a14;
+    --surface: #16261d;
+    --pale: #132119;
+    --soft: #1a2e23;
+    --accent: #7fc08b;
+    --warn: #ff8a80;
+    --shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+    --on-accent: #0f1a14;
+    --toast-bg: #cfeedd;
+    --toast-fg: #0f1a14;
+    --banner-bg: #3b3112; --banner-fg: #ffe9a8; --banner-bd: #5a4a18;
+    --banner-demo-bg: #4a2f10; --banner-demo-fg: #ffd8a0; --banner-demo-bd: #6b4a1e;
+    --svg-bg: #1b2f3a;
+  }
+}
+
+:root[data-theme="dark"] {
+  --green: #5fbf8a;
+  --dark-green: #cfeedd;
+  --light-green: #1f3a2d;
+  --cream: #0f1a14;
+  --text: #e3efe7;
+  --muted: #9db3a4;
+  --border: #2b4336;
+  --white: #0f1a14;
+  --surface: #16261d;
+  --pale: #132119;
+  --soft: #1a2e23;
+  --accent: #7fc08b;
+  --warn: #ff8a80;
+  --shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+  --on-accent: #0f1a14;
+  --toast-bg: #cfeedd;
+  --toast-fg: #0f1a14;
+  --banner-bg: #3b3112; --banner-fg: #ffe9a8; --banner-bd: #5a4a18;
+  --banner-demo-bg: #4a2f10; --banner-demo-fg: #ffd8a0; --banner-demo-bd: #6b4a1e;
+  --svg-bg: #1b2f3a;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 110px; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.6;
+  transition: background 0.25s, color 0.25s;
+}
+
+h1, h2, h3 { line-height: 1.15; }
+
+.skip-link {
+  position: absolute; left: -999px; top: 0; z-index: 100;
+  background: var(--green); color: #fff; padding: 10px 14px; border-radius: 0 0 8px 0;
+}
+.skip-link:focus { left: 0; }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- banner + header ---------- */
+.demo-banner {
+  background: var(--banner-bg); color: var(--banner-fg); text-align: center;
+  padding: 8px 6%; font-size: 0.85rem; border-bottom: 1px solid var(--banner-bd);
+}
+.demo-banner.is-demo { background: var(--banner-demo-bg); color: var(--banner-demo-fg); border-color: var(--banner-demo-bd); }
+
+header {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; padding: 12px 6%;
+  background: var(--cream); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 20;
+}
+
+.logo { display: inline-flex; align-items: center; min-height: 40px; font-size: 1.4rem; font-weight: 800; color: var(--dark-green); text-decoration: none; white-space: nowrap; }
+
+nav { display: flex; gap: 18px; flex-wrap: wrap; }
+nav a { text-decoration: none; color: var(--text); font-weight: 600; font-size: 0.9rem; padding: 4px 0; border-bottom: 2px solid transparent; }
+nav a:hover, nav a.active { color: var(--green); border-bottom-color: var(--green); }
+
+.header-actions { display: flex; gap: 8px; align-items: center; }
+.icon-btn {
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  border-radius: 10px; width: 40px; height: 40px; font-size: 1.1rem; cursor: pointer;
+}
+.icon-btn:hover { background: var(--light-green); }
+.menu-btn { display: none; }
+
+/* ---------- hero ---------- */
+.hero {
+  display: grid; grid-template-columns: 1.2fr 0.8fr; align-items: center;
+  gap: 50px; padding: 70px 8%;
+}
+.tag { color: var(--green); font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; }
+h1 { color: var(--dark-green); font-size: clamp(2.6rem, 6vw, 4.8rem); letter-spacing: -2px; margin: 16px 0; }
+h1 span { color: var(--green); }
+.hero p { color: var(--muted); max-width: 570px; }
+.hero-actions { margin: 14px 0; }
+
+.hero-card {
+  padding: 30px; border-radius: 25px; color: #fff; text-align: center;
+  background: linear-gradient(145deg, #17452f, #40835a); box-shadow: var(--shadow);
+}
+.hero-card h2 { font-size: 1.6rem; margin: 10px 0 4px; }
+.hero-card p { color: #e1eee3; margin: 0 auto; }
+.ring-wrap { position: relative; width: 140px; height: 140px; margin: 0 auto; }
+.ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 10; }
+.ring-fg { fill: none; stroke: #bdf0c9; stroke-width: 10; stroke-linecap: round; stroke-dasharray: 326.7; stroke-dashoffset: 326.7; transition: stroke-dashoffset 0.6s ease; }
+.ring-text { position: absolute; inset: 0; display: grid; place-content: center; }
+.ring-text strong { font-size: 1.9rem; }
+.ring-text small { color: #d9e9dc; }
+.stats { display: flex; justify-content: center; gap: 28px; border-top: 1px solid rgba(255,255,255,0.3); margin-top: 20px; padding-top: 16px; }
+.stats > * { display: flex; flex-direction: column; }
+.stats strong { display: block; font-size: 1.6rem; }
+.stats small { color: #d9e9dc; }
+
+/* ---------- generic ---------- */
+.btn {
+  display: inline-block; border: 1px solid var(--green); border-radius: 10px;
+  padding: 11px 17px; background: var(--green); color: var(--on-accent);
+  font-size: 0.92rem; font-weight: 700; text-decoration: none; cursor: pointer; margin: 5px 4px 5px 0;
+  font-family: inherit;
+}
+.btn:hover { filter: brightness(0.92); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-light { background: var(--surface); color: var(--green); border-color: var(--border); }
+.btn-light:hover { background: var(--light-green); filter: none; }
+
+.section { padding: 70px 8%; max-width: 1500px; margin: auto; }
+.section h2 { color: var(--dark-green); font-size: clamp(1.8rem, 4vw, 2.7rem); margin: 10px 0; letter-spacing: -1px; }
+.pale { background: var(--pale); max-width: none; }
+.pale > * { max-width: 1260px; margin-left: auto; margin-right: auto; }
+.muted { color: var(--muted); }
+.small { font-size: 0.82rem; }
+.sub-h { color: var(--dark-green); margin: 42px 0 12px; font-size: 1.3rem; }
+.error { color: var(--warn); font-weight: 600; min-height: 1.4em; margin: 6px 0 0; }
+code { background: var(--light-green); padding: 2px 6px; border-radius: 6px; font-size: 0.88em; }
+
+.chip { display: inline-block; background: var(--light-green); color: var(--green); border-radius: 999px; padding: 3px 12px; font-size: 0.78rem; font-weight: 700; }
+
+input, select {
+  display: block; width: 100%; padding: 11px; margin: 6px 0 14px;
+  border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text);
+  font-size: 1rem; font-family: inherit;
+}
+input[type="range"] { padding: 0; margin: 4px 0 12px; accent-color: var(--green); }
+.check-line { display: flex !important; gap: 10px; align-items: flex-start; font-weight: 500 !important; font-size: 0.88rem !important; }
+.check-line input, .check-item input { width: 20px; height: 20px; margin: 2px 0 0; flex: none; accent-color: var(--green); }
+label { font-weight: 700; font-size: 0.9rem; display: block; }
+
+/* ---------- exercises ---------- */
+.routine-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0 18px; }
+.routine-tab {
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  padding: 12px 16px; border-radius: 14px; cursor: pointer; text-align: left; font-family: inherit; flex: 1 1 200px;
+}
+.routine-tab strong { display: block; color: var(--dark-green); }
+.routine-tab span { font-size: 0.8rem; color: var(--muted); }
+.routine-tab.active, .routine-tab:hover { background: var(--light-green); border-color: var(--green); }
+
+.runner { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 22px; }
+.runner-visual, .runner-panel, .check-card, .calculator, .chart-card, .method-box, .spot-info {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow);
+}
+.runner-visual { padding: 28px; text-align: center; }
+.runner-panel { padding: 28px; }
+.runner-panel h3 { margin: 0 0 10px; font-size: 1.6rem; color: var(--dark-green); }
+
+.exercise-icon {
+  display: grid; place-items: center; width: 130px; height: 130px; border-radius: 50%;
+  margin: 0 auto 14px; background: var(--light-green); font-size: 4.2rem;
+}
+.exercise-icon.playing { animation-duration: 2.4s; animation-iteration-count: infinite; animation-timing-function: ease-in-out; }
+.anim-roll.playing    { animation-name: roll; }
+.anim-turn.playing    { animation-name: turn; }
+.anim-nod.playing     { animation-name: nod; }
+.anim-tilt.playing    { animation-name: tilt; }
+.anim-squeeze.playing { animation-name: squeeze; }
+.anim-stretch.playing { animation-name: stretch; }
+.anim-twist.playing   { animation-name: twist; }
+.anim-wave.playing    { animation-name: wave; }
+.anim-blink.playing   { animation-name: blink; }
+.anim-march.playing   { animation-name: march; animation-duration: 1s; }
+@keyframes roll    { 0%{transform:rotate(0)} 50%{transform:rotate(14deg) translateY(-6px)} 100%{transform:rotate(0)} }
+@keyframes turn    { 0%,100%{transform:translateX(0) rotateY(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+@keyframes nod     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px) scale(0.96)} }
+@keyframes tilt    { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-16deg)} 75%{transform:rotate(16deg)} }
+@keyframes squeeze { 0%,100%{transform:scaleX(1)} 50%{transform:scaleX(0.82)} }
+@keyframes stretch { 0%,100%{transform:scale(1)} 50%{transform:scale(1.14)} }
+@keyframes twist   { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-20deg)} 75%{transform:rotate(20deg)} }
+@keyframes wave    { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-12deg)} 75%{transform:rotate(12deg)} }
+@keyframes blink   { 0%,40%,100%{transform:scaleY(1)} 50%{transform:scaleY(0.15)} 60%{transform:scaleY(1)} }
+@keyframes march   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+.seq-dots { display: flex; justify-content: center; gap: 8px; margin-top: 8px; }
+.seq-dots button { position: relative; width: 36px; height: 36px; background: transparent; border: 0; padding: 0; cursor: pointer; }
+.seq-dots button::before { content: ""; position: absolute; inset: 10px; border-radius: 50%; background: var(--border); }
+.seq-dots button.done::before { background: var(--accent); }
+.seq-dots button.now::before { background: var(--green); box-shadow: 0 0 0 3px var(--light-green); }
+
+.steps { padding-left: 22px; margin: 8px 0; }
+.steps li { margin: 6px 0; }
+.caution { background: var(--light-green); border-radius: 10px; padding: 8px 12px; font-size: 0.86rem; color: var(--text); }
+
+.timer { color: var(--dark-green); font-size: 3.4rem; font-weight: 800; margin: 12px 0 4px; font-variant-numeric: tabular-nums; }
+.progress { height: 10px; background: var(--border); border-radius: 999px; overflow: hidden; margin: 6px 0 12px; }
+.progress-bar { height: 100%; width: 0; background: linear-gradient(90deg, var(--green), var(--accent)); transition: width 0.4s linear; }
+.controls { display: flex; flex-wrap: wrap; gap: 4px; }
+.comfort { margin-top: 18px; border-top: 1px dashed var(--border); padding-top: 14px; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.filter-btn { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 999px; padding: 7px 14px; cursor: pointer; font-weight: 600; font-family: inherit; }
+.filter-btn.active, .filter-btn:hover { background: var(--green); color: var(--on-accent); border-color: var(--green); }
+
+.lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.lib-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 6px; }
+.lib-card .lib-icon { font-size: 2.2rem; }
+.lib-card h4 { margin: 0; color: var(--dark-green); font-size: 1.05rem; }
+.lib-card p { margin: 0; font-size: 0.85rem; color: var(--muted); flex: 1; }
+
+/* ---------- cards ---------- */
+.cards { display: grid; gap: 18px; margin: 28px 0; }
+.cards.four { grid-template-columns: repeat(4, 1fr); }
+.cards.three { grid-template-columns: repeat(3, 1fr); }
+.card { background: var(--surface); padding: 22px; border: 1px solid var(--border); border-radius: 17px; }
+.card-icon { font-size: 2.1rem; }
+.card h3 { color: var(--dark-green); margin: 6px 0 8px; }
+.card p { color: var(--muted); margin: 4px 0; }
+.big-number { color: var(--dark-green); font-size: 2.4rem; margin: 4px 0; }
+.text-btn { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 4px; background: transparent; color: var(--green); border: 0; font-weight: 700; cursor: pointer; text-align: left; font-family: inherit; }
+.text-btn:hover { text-decoration: underline; }
+
+/* ---------- posture ---------- */
+.posture-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 22px; margin-top: 26px; }
+.posture-diagram svg { width: 100%; height: auto; display: block; border-radius: 18px; }
+.svg-bg { fill: var(--svg-bg); }
+.svg-floor { stroke: #7d98a8; stroke-width: 3; }
+.svg-desk { fill: #6d7b86; }
+.svg-monitor { fill: #3f6f9a; }
+.svg-key { fill: #2d3b45; }
+.svg-chair { fill: #2e5d8a; }
+.svg-chair-line { stroke: #2e5d8a; stroke-width: 6; stroke-linecap: round; }
+.svg-body { fill: #e9b98f; }
+.svg-limb { fill: none; stroke: #f08a3c; stroke-width: 15; stroke-linecap: round; stroke-linejoin: round; }
+.spot { cursor: pointer; }
+.spot circle { fill: var(--green); stroke: #fff; stroke-width: 2.5; transition: transform 0.2s; transform-box: fill-box; transform-origin: center; }
+.spot text { fill: #fff; font-size: 17px; font-weight: 700; text-anchor: middle; pointer-events: none; }
+.spot:hover circle, .spot.active circle { transform: scale(1.25); fill: #d97706; }
+.spot:focus-visible circle { stroke: #000; stroke-width: 3.5; }
+.spot-info { padding: 18px 22px; margin-top: 14px; }
+.spot-info h3 { margin: 0 0 4px; color: var(--dark-green); }
+.spot-info p { margin: 0; color: var(--muted); }
+
+.check-card { padding: 24px; }
+.check-card h3 { margin: 0 0 6px; color: var(--dark-green); }
+.checklist { display: grid; gap: 4px; margin: 10px 0; }
+.check-item { display: flex; gap: 10px; align-items: flex-start; font-weight: 500; font-size: 0.92rem; padding: 6px 0; cursor: pointer; }
+
+/* ---------- reminders ---------- */
+.reminder-box { display: flex; align-items: center; gap: 36px; background: var(--soft); border-radius: 20px; padding: 26px; margin-top: 24px; }
+.countdown-wrap { text-align: center; min-width: 170px; }
+.countdown { font-size: 3.2rem; font-weight: 800; color: var(--dark-green); font-variant-numeric: tabular-nums; }
+.reminder-controls { flex: 1; min-width: 0; }
+.tips-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 22px; }
+
+/* ---------- carbon ---------- */
+.carbon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 28px; }
+.calculator { padding: 26px; }
+.calculator h3 { margin-top: 0; color: var(--dark-green); }
+.calculator label { margin-top: 12px; }
+.impact-card { padding: 28px; border-radius: 20px; color: #fff; background: linear-gradient(145deg, #17452f, #2f7650); box-shadow: var(--shadow); }
+.impact-card .plant { font-size: 3rem; }
+.impact-label { letter-spacing: 1.5px; font-size: 0.78rem; color: #cfe6d3; margin: 0; }
+.impact-card h3 { font-size: 2.8rem; margin: 6px 0; overflow-wrap: anywhere; }
+.impact-card p { color: #e0eee2; margin: 6px 0; }
+.impact-card hr { border: 0; border-top: 1px solid rgba(255,255,255,0.3); margin: 20px 0; }
+
+/* ---------- dashboard ---------- */
+.chart-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.chart-card { padding: 18px; }
+.chart-card h3 { margin: 0 0 8px; font-size: 1rem; color: var(--dark-green); }
+.chart-box { position: relative; height: 230px; }
+.chart-box canvas { max-width: 100%; cursor: pointer; }
+
+.badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.badge { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 14px; text-align: center; }
+.badge .b-icon { font-size: 2rem; filter: grayscale(1); opacity: 0.4; }
+.badge strong { display: block; font-size: 0.9rem; color: var(--dark-green); }
+.badge small { color: var(--muted); }
+.badge.earned { border-color: var(--green); background: var(--light-green); }
+.badge.earned .b-icon { filter: none; opacity: 1; }
+
+/* ---------- method / safety / footer ---------- */
+.method-box { padding: 24px 28px; margin-top: 10px; }
+.method-box h3 { color: var(--dark-green); margin: 18px 0 6px; }
+.method-box h3:first-child { margin-top: 0; }
+.method-box ul { margin: 6px 0; padding-left: 22px; }
+.safety { max-width: 950px; margin: auto; padding: 40px 8%; }
+.safety h2 { color: var(--dark-green); }
+.safety p { color: var(--muted); }
+footer { background: var(--soft); text-align: center; padding: 32px 20px; }
+footer p { margin: 5px; }
+
+.toast-area { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 60; display: grid; gap: 8px; width: min(92vw, 440px); }
+.toast { background: var(--toast-bg); color: var(--toast-fg); padding: 12px 16px; border-radius: 12px; box-shadow: 0 8px 28px rgba(0,0,0,0.3); display: flex; gap: 10px; align-items: center; justify-content: space-between; animation: pop 0.25s ease; }
+.toast button { background: rgba(255,255,255,0.18); color: inherit; border: 1px solid currentColor; border-radius: 8px; padding: 4px 10px; cursor: pointer; font-family: inherit; font-weight: 700; }
+@keyframes pop { from { transform: translateY(12px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1100px) {
+  .cards.four { grid-template-columns: repeat(2, 1fr); }
+  .chart-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 950px) {
+  nav { gap: 12px; }
+  nav a { font-size: 0.82rem; }
+  .hero { gap: 26px; grid-template-columns: 1fr; padding: 50px 6%; }
+  .runner, .posture-grid, .carbon-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 820px) {
+  header { flex-wrap: wrap; }
+  .menu-btn { display: inline-block; }
+  nav { display: none; order: 3; flex-basis: 100%; flex-direction: column; gap: 0; }
+  nav.open { display: flex; }
+  nav a { padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .header-actions { margin-left: auto; }
+}
+@media (max-width: 680px) {
+  .section { padding: 48px 5%; }
+  .cards.three, .cards.four, .tips-row { grid-template-columns: 1fr; }
+  .reminder-box { flex-direction: column; align-items: stretch; gap: 14px; }
+  .countdown-wrap { min-width: 0; }
+  .impact-card h3 { font-size: 2.2rem; }
+  .timer { font-size: 2.8rem; }
+  .stats { gap: 16px; }
+  .btn { padding: 12px 14px; }
+}
+
+/* ---------- safe-area gutters, sticky header band ---------- */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--cream); }
+header { top: env(safe-area-inset-top, 0px); }
+header, .demo-banner { padding-left: max(6%, env(safe-area-inset-left, 0px)); padding-right: max(6%, env(safe-area-inset-right, 0px)); }
+.hero, .section, .safety { padding-left: max(8%, env(safe-area-inset-left, 0px)); padding-right: max(8%, env(safe-area-inset-right, 0px)); }
+footer { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (max-width: 950px) { .hero { padding-left: max(6%, env(safe-area-inset-left, 0px)); padding-right: max(6%, env(safe-area-inset-right, 0px)); } }
+@media (max-width: 680px) { .section, .safety { padding-left: max(5%, env(safe-area-inset-left, 0px)); padding-right: max(5%, env(safe-area-inset-right, 0px)); } }
+.csv-box { margin-top: 14px; }
+.csv-box textarea { width: 100%; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.78rem; padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); }
+
+/* ---------- clickable things ---------- */
+.stat-btn { background: none; border: 0; color: inherit; font: inherit; cursor: pointer; border-radius: 12px; padding: 6px 10px; }
+.stat-btn:hover { background: rgba(255,255,255,0.14); }
+.ring-wrap { display: block; color: inherit; text-decoration: none; cursor: pointer; }
+.card[data-detail] { cursor: pointer; transition: border-color 0.2s, transform 0.2s; }
+.card[data-detail]:hover { border-color: var(--green); transform: translateY(-2px); }
+.chart-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; }
+.chart-head h3 { margin: 0; }
+.chart-head .text-btn { padding: 4px 4px; white-space: nowrap; }
+input[type="search"] { margin: 14px 0 10px; }
+
+.lib-card { transition: border-color 0.2s, transform 0.2s; }
+.lib-card:hover { border-color: var(--green); transform: translateY(-2px); }
+.lib-open { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; text-align: left; background: none; border: 0; padding: 0; color: inherit; font: inherit; cursor: pointer; flex: 1; width: 100%; }
+.lib-open p { flex: none; }
+.lib-foot { display: flex; gap: 8px; align-items: center; justify-content: space-between; margin-top: 4px; }
+.lib-foot .btn { margin: 0; flex: 1; }
+.star-btn { border: 1px solid var(--border); background: var(--surface); color: var(--muted); width: 44px; height: 44px; border-radius: 10px; font-size: 1.25rem; cursor: pointer; flex: none; }
+.star-btn.on { color: #d9a441; border-color: #d9a441; }
+.star-btn:hover { background: var(--light-green); }
+
+.badge { font: inherit; color: inherit; cursor: pointer; width: 100%; transition: transform 0.2s, border-color 0.2s; }
+.badge:hover { transform: translateY(-2px); border-color: var(--green); }
+.badge .progress.mini { height: 6px; margin: 8px 0 0; }
+
+.insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.insight { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.insight .i-icon { font-size: 1.6rem; }
+.insight h4 { margin: 0; color: var(--dark-green); }
+.insight p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+.insight .text-btn { padding: 6px 4px 0; }
+
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 0.92rem; white-space: nowrap; }
+th { color: var(--muted); font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; }
+tbody tr:last-child td { border-bottom: 0; }
+tr.row-click { cursor: pointer; }
+tr.row-click:hover td { background: var(--light-green); }
+tr.row-today td:first-child { font-weight: 700; }
+
+.modal { position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.modal[hidden] { display: none; }
+.modal-backdrop { position: absolute; inset: 0; background: rgba(5, 15, 10, 0.6); }
+.modal-card { position: relative; width: min(560px, 100%); max-height: 100%; overflow: auto; background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 22px; padding: 26px 22px 22px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); animation: pop 0.2s ease; }
+.modal-card:focus { outline: none; }
+.modal-close { position: absolute; top: 10px; right: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; font-size: 1rem; }
+.modal-close:hover { background: var(--light-green); }
+body.modal-open { overflow: hidden; }
+.m-head { display: flex; gap: 14px; align-items: center; margin-bottom: 8px; padding-right: 40px; }
+.m-head h3 { margin: 0; color: var(--dark-green); font-size: 1.4rem; }
+.m-icon { font-size: 2.4rem; }
+.m-center { text-align: center; }
+.m-center .exercise-icon { margin-bottom: 10px; }
+.m-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.m-list { padding-left: 20px; margin: 8px 0; }
+.m-list li { margin: 6px 0; }
+.bar-row { margin: 12px 0; }
+.bar-top { display: flex; justify-content: space-between; gap: 10px; font-size: 0.9rem; margin-bottom: 4px; }
+.stepper { display: flex; align-items: center; gap: 14px; margin: 12px 0; }
+.stepper strong { font-size: 1.8rem; min-width: 2ch; text-align: center; font-variant-numeric: tabular-nums; }
+.stepper .btn { margin: 0; min-width: 48px; }
+.note { background: var(--light-green); border-radius: 10px; padding: 8px 12px; font-size: 0.85rem; }
+@media (max-width: 680px) { .modal-card { padding: 22px 16px 18px; } }
+
+</style>
+
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="demo-banner" id="demoBanner" role="status">
+  <strong>Student prototype.</strong>
+  <span id="demoBannerText">All carbon figures are illustrative estimates, not verified measurements.</span>
+</div>
+
+<header>
+  <a class="logo" href="#home">🌿 EcoErgo</a>
+  <nav id="navigation" aria-label="Main">
+    <a href="#home">Home</a>
+    <a href="#exercises">Exercises</a>
+    <a href="#posture">Posture</a>
+    <a href="#reminders">Reminders</a>
+    <a href="#carbon">Carbon</a>
+    <a href="#progress">Dashboard</a>
+    <a href="#method">Method</a>
+  </nav>
+  <div class="header-actions">
+    <button class="icon-btn" id="themeBtn" aria-label="Switch colour theme" title="Switch colour theme">🌙</button>
+    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="navigation">☰</button>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ================= HOME ================= -->
+<section class="hero" id="home">
+  <div>
+    <span class="tag">HEALTHIER WORKPLACE, GREENER CAMPUS</span>
+    <h1>Move Better.<br><span>Work Greener.</span></h1>
+    <p>
+      Short desk exercises, posture guidance, smart break reminders and an
+      eco-impact tracker, built for university faculty and staff.
+    </p>
+    <div class="hero-actions">
+      <a class="btn" href="#exercises">Start Your 3-Minute Break</a>
+      <a class="btn btn-light" href="#carbon">Track Eco Impact</a>
+    </div>
+    <p class="muted small" id="todayTip">Tip of the day loads here.</p>
+    <button class="text-btn" id="heroTipBtn" type="button">Show another tip →</button>
+  </div>
+
+  <div class="hero-card" aria-label="Today's summary">
+    <a class="ring-wrap" href="#exercises" aria-label="Go to exercises">
+      <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+        <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="52"></circle>
+      </svg>
+      <div class="ring-text"><strong id="ringCount">0/4</strong><small>breaks today</small></div>
+    </a>
+    <h2>Your Daily Reset</h2>
+    <p id="heroMessage">Small breaks can help build healthier work habits.</p>
+    <div class="stats">
+      <button class="stat-btn" type="button" data-detail="score"><strong id="heroScore">0</strong><small>Green Score</small></button>
+      <button class="stat-btn" type="button" data-detail="streak"><strong id="heroStreak">0</strong><small>Day streak</small></button>
+      <button class="stat-btn" type="button" data-detail="co2"><strong id="heroCo2">0.00</strong><small>kg CO₂e (7 days)</small></button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXERCISES ================= -->
+<section class="section" id="exercises">
+  <span class="tag">PHYSIOTHERAPY TOOLKIT</span>
+  <h2>Your 3-Minute Desk Break</h2>
+  <p class="muted">Pick a routine (4 exercises × 45 seconds) or practise a single exercise. Move gently and stop if anything hurts.</p>
+
+  <div class="routine-tabs" id="routineTabs" role="tablist" aria-label="Routines"></div>
+
+  <div class="runner">
+    <div class="runner-visual">
+      <div class="exercise-icon" id="exerciseIcon" aria-hidden="true">🙆</div>
+      <span class="chip" id="exerciseArea">Shoulders</span>
+      <p class="seq-info muted" id="seqInfo">Exercise 1 of 4</p>
+      <div class="seq-dots" id="seqDots"></div>
+    </div>
+
+    <div class="runner-panel">
+      <h3 id="exerciseTitle">Shoulder Rolls</h3>
+      <ol class="steps" id="exerciseSteps"></ol>
+      <p class="caution" id="exerciseCaution"></p>
+
+      <div class="timer" id="timer" role="timer" aria-live="off">00:45</div>
+      <div class="progress" aria-hidden="true"><div class="progress-bar" id="timerBar"></div></div>
+
+      <div class="controls">
+        <button class="btn" id="startTimer">Start</button>
+        <button class="btn btn-light" id="prevExercise" aria-label="Previous exercise">◀ Prev</button>
+        <button class="btn btn-light" id="nextExercise" aria-label="Next exercise">Next ▶</button>
+        <button class="btn btn-light" id="resetTimer">Reset</button>
+      </div>
+      <p id="timerMessage" class="muted" aria-live="polite">Ready when you are.</p>
+
+      <div class="comfort">
+        <label for="painBefore">Discomfort before (0-10): <strong id="painBeforeVal">0</strong></label>
+        <input type="range" id="painBefore" min="0" max="10" value="0">
+        <label for="painAfter">Discomfort after (0-10): <strong id="painAfterVal">0</strong></label>
+        <input type="range" id="painAfter" min="0" max="10" value="0">
+        <p class="muted small">Optional self-rating, saved on this device for your feedback data. It is not a medical measurement.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub-h">Exercise Library</h3>
+  <input type="search" id="libSearch" placeholder="Search exercises (try neck, eyes, wrist)" aria-label="Search exercises" autocomplete="off">
+  <div class="filters" id="filters" role="group" aria-label="Filter exercises"></div>
+  <p class="muted small" id="libCount" aria-live="polite"></p>
+  <div class="lib-grid" id="libGrid"></div>
+</section>
+
+<!-- ================= POSTURE ================= -->
+<section class="section pale" id="posture">
+  <span class="tag">ERGONOMICS</span>
+  <h2>Build a Better Workspace</h2>
+  <p class="muted">Tap the numbered points on the diagram to see what to check at each part of your workstation.</p>
+
+  <div class="posture-grid">
+    <div class="posture-diagram">
+      <svg viewBox="0 0 400 300" id="postureSvg" role="img" aria-label="Seated person at a desk with six tappable posture points">
+        <rect x="0" y="0" width="400" height="300" rx="18" class="svg-bg"/>
+        <line x1="10" y1="270" x2="390" y2="270" class="svg-floor"/>
+        <!-- desk -->
+        <rect x="215" y="170" width="175" height="8" rx="3" class="svg-desk"/>
+        <rect x="372" y="178" width="8" height="92" class="svg-desk"/>
+        <!-- monitor -->
+        <rect x="300" y="92" width="72" height="50" rx="5" class="svg-monitor"/>
+        <rect x="331" y="142" width="10" height="28" class="svg-desk"/>
+        <!-- keyboard -->
+        <rect x="248" y="162" width="58" height="8" rx="2" class="svg-key"/>
+        <!-- chair -->
+        <rect x="98" y="122" width="12" height="82" rx="6" class="svg-chair"/>
+        <rect x="108" y="192" width="96" height="10" rx="5" class="svg-chair"/>
+        <rect x="152" y="202" width="8" height="50" class="svg-chair"/>
+        <line x1="118" y1="254" x2="196" y2="254" class="svg-chair-line"/>
+        <circle cx="120" cy="260" r="5" class="svg-chair"/><circle cx="194" cy="260" r="5" class="svg-chair"/>
+        <!-- person -->
+        <circle cx="165" cy="95" r="17" class="svg-body"/>
+        <path d="M162 114 L150 190" class="svg-limb"/>
+        <path d="M160 128 L166 165 L250 165" class="svg-limb"/>
+        <path d="M150 190 L215 192 L215 262 L238 262" class="svg-limb"/>
+        <!-- hotspots -->
+        <g class="spot" data-spot="monitor" tabindex="0" role="button" aria-label="Screen"><circle cx="336" cy="104" r="20"/><text x="336" y="110">1</text></g>
+        <g class="spot" data-spot="keyboard" tabindex="0" role="button" aria-label="Keyboard and mouse"><circle cx="278" cy="146" r="20"/><text x="278" y="152">2</text></g>
+        <g class="spot" data-spot="elbows" tabindex="0" role="button" aria-label="Arms and elbows"><circle cx="190" cy="145" r="20"/><text x="190" y="151">3</text></g>
+        <g class="spot" data-spot="back" tabindex="0" role="button" aria-label="Back support"><circle cx="125" cy="150" r="20"/><text x="125" y="156">4</text></g>
+        <g class="spot" data-spot="knees" tabindex="0" role="button" aria-label="Hips and knees"><circle cx="185" cy="218" r="20"/><text x="185" y="224">5</text></g>
+        <g class="spot" data-spot="feet" tabindex="0" role="button" aria-label="Feet"><circle cx="228" cy="240" r="20"/><text x="228" y="246">6</text></g>
+      </svg>
+      <div class="spot-info" id="spotInfo" aria-live="polite">
+        <h3 id="spotTitle">Screen</h3>
+        <p id="spotText"></p>
+      </div>
+    </div>
+
+    <div class="check-card">
+      <h3>Posture Self-Check</h3>
+      <p class="muted small">Tick what is true for you right now. This is a self-awareness tool, not a medical assessment.</p>
+      <div id="checklist" class="checklist"></div>
+      <div class="progress" aria-hidden="true"><div class="progress-bar" id="checkBar"></div></div>
+      <p><strong id="checkScore">0%</strong> <span id="checkMsg" class="muted">Tick the items above.</span></p>
+      <button class="btn" id="saveCheck">Save Today's Check</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REMINDERS ================= -->
+<section class="section" id="reminders">
+  <span class="tag">SMART REMINDERS</span>
+  <h2>Movement Break Reminders</h2>
+  <p class="muted">Reminders work while this page stays open in a browser tab. For all-day reminders, a Telegram bot or opt-in notification service is the planned next step.</p>
+
+  <div class="reminder-box">
+    <div class="countdown-wrap">
+      <div class="countdown" id="countdown">--:--</div>
+      <small class="muted">until next break</small>
+    </div>
+    <div class="reminder-controls">
+      <label for="reminderInterval">Remind me</label>
+      <select id="reminderInterval">
+        <option value="1">Every 1 minute (demo)</option>
+        <option value="30" selected>Every 30 minutes</option>
+        <option value="45">Every 45 minutes</option>
+        <option value="60">Every 60 minutes</option>
+      </select>
+      <div class="controls">
+        <button class="btn" id="enableReminder">Enable</button>
+        <button class="btn btn-light" id="disableReminder">Turn Off</button>
+        <button class="btn btn-light" id="testReminder">Test Now</button>
+      </div>
+      <p id="reminderStatus" class="muted" aria-live="polite">Reminders are off.</p>
+    </div>
+  </div>
+
+  <div class="tips-row">
+    <article class="card"><div class="card-icon">💡</div><h3>Posture tip</h3><p id="postureTip"></p><button class="text-btn" id="newPostureTip">Another tip →</button></article>
+    <article class="card"><div class="card-icon">🍃</div><h3>Eco tip</h3><p id="ecoTip"></p><button class="text-btn" id="newEcoTip">Another tip →</button></article>
+  </div>
+</section>
+
+<!-- ================= CARBON ================= -->
+<section class="section pale" id="carbon">
+  <span class="tag">SUSTAINABILITY TRACKER</span>
+  <h2>Calculate Your Eco Impact</h2>
+  <p class="muted">Enter what you avoided today and save it to your log. Values are illustrative estimates.</p>
+
+  <div class="carbon-grid">
+    <form class="calculator" id="carbonForm" novalidate>
+      <h3>Today's Activity</h3>
+
+      <label for="pages">Printed pages avoided</label>
+      <input id="pages" type="number" inputmode="numeric" min="0" max="10000" value="0">
+
+      <label for="trips">Trips avoided (e.g. used an online meeting)</label>
+      <input id="trips" type="number" inputmode="numeric" min="0" max="100" value="0">
+
+      <label for="distance">Distance per trip (km, one way)</label>
+      <input id="distance" type="number" inputmode="decimal" min="0" max="500" value="0">
+
+      <label for="mode">Usual travel mode</label>
+      <select id="mode">
+        <option value="car">Car</option>
+        <option value="twoWheeler">Motorbike / scooter</option>
+        <option value="bus">Bus</option>
+      </select>
+
+      <label class="check-line"><input type="checkbox" id="clinic"> A clinic visit may have been avoided (potential only, not counted in CO₂e)</label>
+
+      <div class="controls">
+        <button class="btn" type="submit" id="calculate">Calculate &amp; Save to Today</button>
+        <button class="btn btn-light" type="button" id="clearToday">Clear Today</button>
+      </div>
+      <p id="carbonError" class="error" role="alert"></p>
+      <p class="muted small" id="factorNote"></p>
+    </form>
+
+    <div class="impact-card">
+      <div class="plant">🍃</div>
+      <p class="impact-label">ILLUSTRATIVE ESTIMATED SAVINGS (TODAY)</p>
+      <h3><span id="carbonResult">0.00</span> kg CO₂e</h3>
+      <p id="carbonDetails">Enter your activities to calculate an estimate.</p>
+      <hr>
+      <p>This week: <strong id="weekCo2">0.00</strong> kg CO₂e</p>
+      <p>Pages tracked this week: <strong id="weekPages">0</strong></p>
+      <p>Trips avoided this week: <strong id="weekTrips">0</strong></p>
+      <p>Possible clinic visits avoided (potential): <strong id="weekClinic">0</strong></p>
+      <p class="small">Clinic visits are shown only as a potential benefit and are never added to the carbon total, because not every neck or back problem can be managed with home exercises.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DASHBOARD ================= -->
+<section class="section" id="progress">
+  <span class="tag">YOUR DASHBOARD</span>
+  <h2>Your Progress</h2>
+
+  <div class="cards four">
+    <article class="card" data-detail="breaks">
+      <div class="card-icon">🧘</div>
+      <p>Breaks today</p>
+      <h3 class="big-number" id="breakCount">0</h3>
+      <button class="text-btn" id="logBreak">+ Log a break</button>
+      <button class="text-btn" data-detail="breaks" type="button">See details →</button>
+    </article>
+    <article class="card" data-detail="pages">
+      <div class="card-icon">📄</div>
+      <p>Pages avoided (7 days)</p>
+      <h3 class="big-number" id="pageCount">0</h3>
+      <button class="text-btn" id="logPages">+ Add 10 pages</button>
+      <button class="text-btn" data-detail="pages" type="button">See details →</button>
+    </article>
+    <article class="card" data-detail="co2">
+      <div class="card-icon">🌿</div>
+      <p>Est. CO₂e (7 days)</p>
+      <h3 class="big-number"><span id="progressCarbon">0.00</span> kg</h3>
+      <p class="muted small">From your saved log.</p>
+      <button class="text-btn" data-detail="co2" type="button">See details →</button>
+    </article>
+    <article class="card" data-detail="score">
+      <div class="card-icon">⭐</div>
+      <p>Weekly Green Score</p>
+      <h3 class="big-number"><span id="scoreBig">0</span>/100</h3>
+      <p class="muted small" id="scoreLabel">Keep going!</p>
+      <button class="text-btn" data-detail="score" type="button">How it is scored →</button>
+    </article>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card"><div class="chart-head"><h3>Breaks per day</h3><button class="text-btn" data-detail="breaks" type="button">View data</button></div><div class="chart-box"><canvas id="chartBreaks" aria-label="Breaks per day chart" role="img"></canvas></div></div>
+    <div class="chart-card"><div class="chart-head"><h3>Estimated CO₂e per day (kg)</h3><button class="text-btn" data-detail="co2" type="button">View data</button></div><div class="chart-box"><canvas id="chartCo2" aria-label="Estimated CO2e per day chart" role="img"></canvas></div></div>
+    <div class="chart-card"><div class="chart-head"><h3>Green Score breakdown</h3><button class="text-btn" data-detail="score" type="button">View data</button></div><div class="chart-box"><canvas id="chartScore" aria-label="Green score breakdown chart" role="img"></canvas></div></div>
+  </div>
+
+  <h3 class="sub-h">Insights</h3>
+  <div class="insights" id="insights"></div>
+
+  <h3 class="sub-h">Daily Log (last 7 days)</h3>
+  <p class="muted small">Tap a day to add or remove breaks, or clear that day.</p>
+  <div class="table-wrap"><table id="logTable"><thead><tr><th>Day</th><th>Breaks</th><th>Pages</th><th>Trips</th><th>CO₂e (kg)</th></tr></thead><tbody id="logBody"></tbody></table></div>
+
+  <h3 class="sub-h">Badges</h3>
+  <p class="muted small">Tap a badge to see how to earn it and your progress.</p>
+  <div class="badges" id="badges"></div>
+
+  <h3 class="sub-h">Data &amp; Demo Tools</h3>
+  <div class="controls">
+    <button class="btn" id="loadDemo">Load Demo Data</button>
+    <button class="btn btn-light" id="exportCsv">Export CSV</button>
+    <button class="btn btn-light" id="resetProgress">Reset All Progress</button>
+  </div>
+  <p id="progressMessage" class="muted" aria-live="polite">Every small step counts.</p>
+  <div class="csv-box" id="csvBox" hidden>
+    <label for="csvText">Your data as CSV (copy and paste into Excel or Google Sheets)</label>
+    <textarea id="csvText" rows="8" readonly></textarea>
+    <button class="btn btn-light" id="copyCsv" type="button">Copy CSV</button>
+  </div>
+</section>
+
+<!-- ================= METHOD ================= -->
+<section class="section pale" id="method">
+  <span class="tag">RESEARCH METHODOLOGY</span>
+  <h2>How This Project Works</h2>
+  <div class="cards three">
+    <article class="card"><div class="card-icon">🩺</div><h3>Physiotherapy (BPT)</h3><p>Select and review exercises, write posture guidance and safety instructions. All routines should be checked by a qualified physiotherapist.</p><button class="text-btn" data-method="bpt" type="button">Read more →</button></article>
+    <article class="card"><div class="card-icon">💻</div><h3>Technology (B.Tech)</h3><p>HTML, CSS and JavaScript website on free hosting. Progress is stored in the browser (localStorage); charts use Chart.js.</p><button class="text-btn" data-method="tech" type="button">Read more →</button></article>
+    <article class="card"><div class="card-icon">📋</div><h3>Evaluation (joint)</h3><p>Staff survey, usability testing and pre/post feedback. The optional discomfort sliders can supply self-reported data for analysis.</p><button class="text-btn" data-method="eval" type="button">Read more →</button></article>
+  </div>
+
+  <div class="method-box">
+    <h3>Green Score (0-100, last 7 days)</h3>
+    <ul id="scoreRules"></ul>
+    <h3>Carbon estimate</h3>
+    <p><code>CO₂e = pages × factor<sub>page</sub> + trips × distance × factor<sub>mode</sub></code></p>
+    <p class="muted">Factors are illustrative and listed in <code>data.js</code>. Healthcare visits are never converted into carbon savings automatically.</p>
+    <h3>Limitations</h3>
+    <ul>
+      <li>Self-reported inputs; savings are estimates, not measurements.</li>
+      <li>Data stays in one browser. Sharing across users needs a backend.</li>
+      <li>Reminders only run while the page is open.</li>
+      <li>Demo data is simulated and is not real staff or institutional data.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="safety">
+  <h2>Health and Safety</h2>
+  <p>
+    This student project provides general educational information and does not
+    diagnose or treat medical conditions. Have a qualified physiotherapy
+    professional review the exercise routines. Stop if an exercise causes pain,
+    dizziness, numbness or worsening symptoms. Seek appropriate medical advice
+    for persistent or severe symptoms.
+  </p>
+</section>
+</main>
+
+<footer>
+  <a class="logo" href="#home">🌿 EcoErgo</a>
+  <p>Move Better. Work Greener.</p>
+  <p class="muted">University TDP Project · <span id="year"></span></p>
+</footer>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitleAnchor" tabindex="-1" id="modalCard">
+    <button class="modal-close" id="modalClose" type="button" aria-label="Close">✕</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast-area" id="toastArea" aria-live="polite" aria-atomic="true"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.js"></script>
+<script>
+/* =========================================================
+   EcoErgo - editable content & settings (data.js)
+   Change text, exercises, tips and factors HERE.
+   You do not need to touch script.js for content changes.
+   ========================================================= */
+
+window.ECOERGO_DATA = {
+
+  /* ---------- Emission factors (ILLUSTRATIVE - replace with cited values) ---------- */
+  factors: {
+    kgCO2ePerPage: 0.005,          // per printed A4 page (illustrative)
+    kgCO2ePerKm: {
+      car: 0.17,                   // petrol car, per km (illustrative)
+      twoWheeler: 0.07,            // motorbike / scooter, per km (illustrative)
+      bus: 0.09                    // bus passenger, per km (illustrative)
+    },
+    note: "Illustrative values for a student prototype. Replace with cited, locally appropriate factors (for example from a national emission-factor database) before reporting results."
+  },
+
+  /* ---------- Green Score settings (weekly, 0-100) ---------- */
+  score: {
+    // Each part earns points up to its maximum when the weekly target is reached.
+    breaks:  { target: 20, max: 40, label: "Movement breaks", short: "Breaks" },
+    paper:   { target: 50, max: 20, label: "Paper avoided (pages)", short: "Paper" },
+    travel:  { target: 5,  max: 20, label: "Trips avoided", short: "Travel" },
+    posture: { target: 5,  max: 20, label: "Posture-check days", short: "Posture" }
+  },
+
+  dailyBreakGoal: 4,
+
+  /* ---------- Exercises (to be reviewed by the BPT team) ---------- */
+  exercises: [
+    {
+      id: "shoulder-rolls", title: "Shoulder Rolls", icon: "🙆", area: "Shoulders", seconds: 45, anim: "roll",
+      steps: [
+        "Sit tall with your feet flat and arms relaxed.",
+        "Lift both shoulders up towards your ears.",
+        "Roll them back and down in a slow circle.",
+        "Repeat smoothly, then reverse the direction. Breathe normally."
+      ],
+      caution: "Keep the movement small and pain-free."
+    },
+    {
+      id: "neck-turns", title: "Gentle Neck Turns", icon: "🙂", area: "Neck", seconds: 45, anim: "turn",
+      steps: [
+        "Sit tall and look straight ahead.",
+        "Slowly turn your head to the right, only as far as comfortable.",
+        "Pause, return to the centre, then turn to the left.",
+        "Keep your shoulders relaxed and do not force the movement."
+      ],
+      caution: "Stop if you feel dizziness, tingling or sharp pain."
+    },
+    {
+      id: "chin-tuck", title: "Chin Tucks", icon: "🧍", area: "Neck", seconds: 45, anim: "nod",
+      steps: [
+        "Sit tall and look forward.",
+        "Gently glide your chin straight back, as if making a small double chin.",
+        "Hold for 2-3 seconds, then relax.",
+        "Repeat slowly, keeping your eyes level."
+      ],
+      caution: "This should feel like a mild stretch at the back of the neck, not pain."
+    },
+    {
+      id: "side-neck", title: "Side Neck Stretch", icon: "🙇", area: "Neck", seconds: 45, anim: "tilt",
+      steps: [
+        "Sit tall and keep both shoulders down and relaxed.",
+        "Tilt your right ear gently towards your right shoulder.",
+        "Hold for 15 seconds, breathing slowly. Do not pull on your head.",
+        "Return to the centre and repeat on the left side."
+      ],
+      caution: "Use only a gentle stretch. Stop if you feel pain or arm tingling."
+    },
+    {
+      id: "shoulder-squeeze", title: "Shoulder Blade Squeeze", icon: "💪", area: "Upper back", seconds: 45, anim: "squeeze",
+      steps: [
+        "Sit tall with your arms by your sides.",
+        "Gently squeeze your shoulder blades together and slightly down.",
+        "Hold for 3-5 seconds without shrugging.",
+        "Relax and repeat."
+      ],
+      caution: "Do not arch your lower back."
+    },
+    {
+      id: "upper-back", title: "Upper-Back Stretch", icon: "🧘", area: "Upper back", seconds: 45, anim: "stretch",
+      steps: [
+        "Clasp your hands in front of you at chest height.",
+        "Gently push your hands forward and round your upper back.",
+        "Hold for 10-15 seconds and breathe.",
+        "Release and sit tall again."
+      ],
+      caution: "Only stretch within a comfortable range."
+    },
+    {
+      id: "seated-twist", title: "Gentle Seated Twist", icon: "🔄", area: "Back", seconds: 45, anim: "twist",
+      steps: [
+        "Sit tall near the front of your chair.",
+        "Place one hand on the opposite knee or the chair arm.",
+        "Gently turn your upper body to look over one shoulder.",
+        "Hold for about 10 seconds, then switch sides."
+      ],
+      caution: "Rotate from the upper back, not by forcing the lower back."
+    },
+    {
+      id: "wrist-stretch", title: "Wrist & Finger Stretch", icon: "🤲", area: "Wrists", seconds: 45, anim: "wave",
+      steps: [
+        "Extend one arm forward with the palm facing up.",
+        "With the other hand, gently bend the fingers downward.",
+        "Hold for 10 seconds, then turn the palm down and repeat.",
+        "Switch arms and open and close your hands a few times."
+      ],
+      caution: "Stop if you feel numbness or tingling."
+    },
+    {
+      id: "eye-rest", title: "Eye Rest (20-20-20)", icon: "👀", area: "Eyes", seconds: 45, anim: "blink",
+      steps: [
+        "Look away from your screen at something far away (about 6 metres / 20 feet).",
+        "Keep looking at it for about 20 seconds.",
+        "Blink slowly several times.",
+        "Close your eyes for a few breaths before returning to work."
+      ],
+      caution: "Repeat regularly during long screen sessions."
+    },
+    {
+      id: "stand-march", title: "Stand and Move", icon: "🚶", area: "Whole body", seconds: 45, anim: "march",
+      steps: [
+        "Stand up carefully, holding your desk if needed.",
+        "Walk a few steps or march gently on the spot.",
+        "Roll your shoulders and take a few deep breaths.",
+        "Sit back down with your back supported."
+      ],
+      caution: "Make sure the space around you is safe."
+    }
+  ],
+
+  /* ---------- 3-minute routines (4 exercises x 45 s = 180 s) ---------- */
+  routines: [
+    { id: "quick",   title: "Quick 3-Min Reset",     blurb: "Neck, shoulders, upper back and a stand-up break.",
+      items: ["shoulder-rolls", "neck-turns", "upper-back", "stand-march"] },
+    { id: "neck",    title: "Neck & Shoulder Relief", blurb: "For a stiff neck and tight shoulders.",
+      items: ["chin-tuck", "side-neck", "shoulder-squeeze", "shoulder-rolls"] },
+    { id: "desk",    title: "Desk Recharge",          blurb: "Wrists, eyes, gentle twist and a walk.",
+      items: ["wrist-stretch", "eye-rest", "seated-twist", "stand-march"] }
+  ],
+
+  /* ---------- Posture guide hotspots ---------- */
+  postureSpots: {
+    monitor:  { title: "Screen",   text: "Place the screen about an arm's length away. The top of the screen should be at or just below eye level so your neck stays neutral." },
+    keyboard: { title: "Keyboard & mouse", text: "Keep the keyboard and mouse close and at the same level, with wrists in a neutral, straight position." },
+    elbows:   { title: "Arms & elbows", text: "Let your shoulders relax and keep your elbows close to your body, bent at roughly a right angle." },
+    back:     { title: "Back support", text: "Sit back so your lower back is supported by the chair. Adjust the backrest or use a small cushion if needed." },
+    knees:    { title: "Hips & knees", text: "Keep your thighs roughly parallel to the floor with a little space between the seat edge and the back of your knees." },
+    feet:     { title: "Feet", text: "Rest both feet flat on the floor or on a footrest. Avoid crossing your legs for long periods." }
+  },
+
+  postureChecklist: [
+    "My screen is about an arm's length away.",
+    "The top of my screen is near eye level.",
+    "My shoulders are relaxed, not hunched.",
+    "My elbows are bent at about a right angle.",
+    "My wrists are straight when I type.",
+    "My lower back is supported by the chair.",
+    "My feet are flat on the floor or a footrest.",
+    "I have changed position or stood up in the last hour."
+  ],
+
+  /* ---------- Tips ---------- */
+  postureTips: [
+    "Change position at least once every 30-60 minutes.",
+    "Bring the screen to your eyes instead of leaning your head towards it.",
+    "Keep frequently used items within easy reach to avoid twisting and stretching.",
+    "Use a phone stand or hands-free option instead of cradling the phone on your shoulder.",
+    "Take a short walk while reading a long document or thinking.",
+    "Relax your jaw and drop your shoulders every time you notice tension.",
+    "Stand up when you take calls, if your workplace allows it.",
+    "Drinking water often gives you a natural reason to stand and move.",
+    "Sit with your back supported rather than perched on the edge of the chair.",
+    "Adjust screen brightness and text size so you do not need to lean forward."
+  ],
+  ecoTips: [
+    "Share documents digitally instead of printing them.",
+    "If you must print, use double-sided printing.",
+    "Combine errands into one trip to reduce travel.",
+    "Join online meetings when a trip adds little value.",
+    "Switch off your monitor and computer when you finish for the day.",
+    "Use shared folders and PDFs instead of printed handouts.",
+    "Walk, cycle or use public transport for short trips when practical."
+  ],
+
+  /* ---------- Badges (checked in script.js) ---------- */
+  badges: [
+    { id: "first",   icon: "🌱", title: "First Break",      desc: "Log your first movement break." },
+    { id: "goal",    icon: "🎯", title: "Daily Goal",       desc: "Reach your daily break goal." },
+    { id: "streak",  icon: "🔥", title: "3-Day Streak",     desc: "Log a break on 3 days in a row." },
+    { id: "week",    icon: "🏅", title: "Week Warrior",     desc: "20 breaks in 7 days." },
+    { id: "paper",   icon: "📄", title: "Paper Saver",      desc: "Track 50 pages avoided." },
+    { id: "travel",  icon: "🚲", title: "Green Commuter",   desc: "Track 3 trips avoided." },
+    { id: "posture", icon: "🪑", title: "Posture Pro",      desc: "Score 80% or more on a posture check." }
+  ],
+
+  /* ---------- "Read more" panels in the Method section ---------- */
+  methodDetails: {
+    bpt: { icon: "🩺", title: "Physiotherapy (BPT) role", points: [
+      "Select safe, simple desk exercises for neck, shoulders, upper back, wrists and eyes.",
+      "Write the step-by-step instructions and caution notes (see data.js).",
+      "Prepare the posture guide and the safety instructions.",
+      "Review every routine before the site is shown to staff."
+    ]},
+    tech: { icon: "💻", title: "Technology (B.Tech) role", points: [
+      "Build the website with HTML, CSS and JavaScript and host it free on GitHub Pages.",
+      "Implement the timer, break reminders, carbon calculator and dashboard.",
+      "Store progress in the browser (localStorage) so no server or cost is needed.",
+      "Test the site on laptop and mobile."
+    ]},
+    eval: { icon: "📋", title: "Joint evaluation", points: [
+      "Survey university staff before and after using the site.",
+      "Use the optional discomfort sliders and the CSV export as self-reported data.",
+      "Run usability testing and collect feedback.",
+      "Report limits honestly: self-reported inputs, illustrative emission factors, simulated demo data."
+    ]}
+  }
+};
+
+</script>
+<script>
+/* =========================================================
+   EcoErgo - application logic (script.js)
+   Needs data.js (content) to be loaded first.
+   Data is stored in the browser only (localStorage).
+   ========================================================= */
+(function () {
+  "use strict";
+
+  var D = window.ECOERGO_DATA;
+  if (!D) {
+    console.error("EcoErgo: data.js did not load.");
+    return;
+  }
+
+  var STORAGE_KEY = "ecoergo-data-v2";
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ==================== pure helpers (easy to test) ==================== */
+
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function dateKey(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+
+  function keyOffset(daysAgo) {
+    var d = new Date();
+    d.setHours(12, 0, 0, 0);               // noon avoids daylight-saving edge cases
+    d.setDate(d.getDate() - daysAgo);
+    return dateKey(d);
+  }
+  function lastDays(n) {
+    var out = [];
+    for (var i = n - 1; i >= 0; i--) out.push(keyOffset(i));
+    return out;
+  }
+  function keyToDate(key) {
+    var p = key.split("-").map(Number);
+    return new Date(p[0], p[1] - 1, p[2], 12, 0, 0, 0);
+  }
+  function dayLabel(key) {
+    try { return keyToDate(key).toLocaleDateString(undefined, { weekday: "short" }); }
+    catch (e) { return key.slice(5); }
+  }
+  function num(v) { v = Number(v); return isFinite(v) && v > 0 ? v : 0; }
+  function round2(v) { return Math.round(v * 100) / 100; }
+
+  function emptyDay() {
+    return { breaks: 0, pages: 0, trips: 0, km: 0, mode: "car", co2: 0, clinic: 0, checks: 0, checkPct: 0, pain: [] };
+  }
+  function cleanDay(raw) {
+    var d = emptyDay();
+    if (!raw || typeof raw !== "object") return d;
+    d.breaks = Math.floor(num(raw.breaks));
+    d.pages = Math.floor(num(raw.pages));
+    d.trips = Math.floor(num(raw.trips));
+    d.km = num(raw.km);
+    d.mode = D.factors.kgCO2ePerKm[raw.mode] !== undefined ? raw.mode : "car";
+    d.co2 = num(raw.co2);
+    d.clinic = raw.clinic ? 1 : 0;
+    d.checks = Math.floor(num(raw.checks));
+    d.checkPct = Math.min(100, num(raw.checkPct));
+    d.pain = Array.isArray(raw.pain) ? raw.pain.slice(0, 50).map(function (p) {
+      return { before: Math.min(10, num(p && p.before)), after: Math.min(10, num(p && p.after)) };
+    }) : [];
+    return d;
+  }
+
+  /* CO2e = pages * pageFactor + trips * distance * modeFactor  (illustrative factors) */
+  function computeCo2(pages, trips, km, mode) {
+    var f = D.factors;
+    var modeFactor = f.kgCO2ePerKm[mode] !== undefined ? f.kgCO2ePerKm[mode] : f.kgCO2ePerKm.car;
+    var paper = num(pages) * f.kgCO2ePerPage;
+    var travel = num(trips) * num(km) * modeFactor;
+    return { paper: paper, travel: travel, total: paper + travel };
+  }
+
+  function weekTotals(days) {
+    var t = { breaks: 0, pages: 0, trips: 0, co2: 0, clinic: 0, checkDays: 0 };
+    lastDays(7).forEach(function (k) {
+      var d = days[k];
+      if (!d) return;
+      t.breaks += d.breaks;
+      t.pages += d.pages;
+      t.trips += d.trips;
+      t.co2 += d.co2;
+      t.clinic += d.clinic;
+      if (d.checks > 0) t.checkDays += 1;
+    });
+    return t;
+  }
+
+  /* Green Score: each part = min(value / target, 1) * max points. Total is 0-100. */
+  function computeScore(t) {
+    var cfg = D.score;
+    var parts = [
+      { key: "breaks",  value: t.breaks },
+      { key: "paper",   value: t.pages },
+      { key: "travel",  value: t.trips },
+      { key: "posture", value: t.checkDays }
+    ].map(function (p) {
+      var c = cfg[p.key];
+      var points = Math.min(p.value / c.target, 1) * c.max;
+      return { key: p.key, label: c.label, short: c.short || c.label, value: p.value, target: c.target, max: c.max, points: points };
+    });
+    var total = parts.reduce(function (s, p) { return s + p.points; }, 0);
+    return { total: Math.round(total), parts: parts };
+  }
+
+  function currentStreak(days) {
+    var i = 0;
+    if (!days[keyOffset(0)] || days[keyOffset(0)].breaks === 0) i = 1;   // today may still be empty
+    var n = 0;
+    while (i < 400) {
+      var d = days[keyOffset(i)];
+      if (d && d.breaks > 0) { n++; i++; } else break;
+    }
+    return n;
+  }
+  function longestStreak(days) {
+    var keys = Object.keys(days).filter(function (k) { return days[k].breaks > 0; }).sort();
+    var best = 0, run = 0, prev = null;
+    keys.forEach(function (k) {
+      var t = keyToDate(k).getTime();
+      if (prev !== null && Math.round((t - prev) / 86400000) === 1) run++; else run = 1;
+      if (run > best) best = run;
+      prev = t;
+    });
+    return best;
+  }
+
+  function earnedBadges(days) {
+    var keys = Object.keys(days);
+    var sum = function (f) { return keys.reduce(function (s, k) { return s + days[k][f]; }, 0); };
+    var w = weekTotals(days);
+    return {
+      first:   sum("breaks") > 0,
+      goal:    keys.some(function (k) { return days[k].breaks >= D.dailyBreakGoal; }),
+      streak:  longestStreak(days) >= 3,
+      week:    w.breaks >= 20,
+      paper:   sum("pages") >= 50,
+      travel:  sum("trips") >= 3,
+      posture: keys.some(function (k) { return days[k].checkPct >= 80; })
+    };
+  }
+
+  function badgeProgress(days) {
+    var keys = Object.keys(days);
+    var sum = function (f) { return keys.reduce(function (s, k) { return s + days[k][f]; }, 0); };
+    var maxDay = function (f) { return keys.reduce(function (m, k) { return Math.max(m, days[k][f]); }, 0); };
+    var w = weekTotals(days);
+    return {
+      first:   { value: sum("breaks"),     target: 1 },
+      goal:    { value: maxDay("breaks"),  target: D.dailyBreakGoal },
+      streak:  { value: longestStreak(days), target: 3 },
+      week:    { value: w.breaks,          target: 20 },
+      paper:   { value: sum("pages"),      target: 50 },
+      travel:  { value: sum("trips"),      target: 3 },
+      posture: { value: maxDay("checkPct"), target: 80 }
+    };
+  }
+
+  function demoDays() {
+    var keys = lastDays(7);
+    var breaks = [3, 4, 2, 5, 4, 3, 2];
+    var pages  = [12, 0, 25, 8, 15, 10, 6];
+    var trips  = [0, 1, 0, 1, 0, 1, 1];
+    var checkP = [0, 75, 0, 88, 0, 100, 0];
+    var out = {};
+    keys.forEach(function (k, i) {
+      var d = emptyDay();
+      d.breaks = breaks[i];
+      d.pages = pages[i];
+      d.trips = trips[i];
+      d.km = trips[i] ? 12 : 0;
+      d.mode = "car";
+      d.co2 = computeCo2(d.pages, d.trips, d.km, d.mode).total;
+      d.clinic = i === 3 ? 1 : 0;
+      d.checks = checkP[i] ? 1 : 0;
+      d.checkPct = checkP[i];
+      d.pain = [{ before: 4 + (i % 3), after: 2 + (i % 2) }];
+      out[k] = d;
+    });
+    return out;
+  }
+
+  /* ==================== state & storage ==================== */
+
+  var state = loadState();
+  var memoryOnly = false;
+
+  function loadState() {
+    var s = { days: {}, settings: { theme: null, interval: 30, favorites: [] }, demo: false };
+    try {
+      var raw = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (raw && typeof raw === "object") {
+        Object.keys(raw.days || {}).forEach(function (k) {
+          if (/^\d{4}-\d{2}-\d{2}$/.test(k)) s.days[k] = cleanDay(raw.days[k]);
+        });
+        if (raw.settings) {
+          s.settings.theme = raw.settings.theme === "dark" || raw.settings.theme === "light" ? raw.settings.theme : null;
+          s.settings.interval = [1, 30, 45, 60].indexOf(Number(raw.settings.interval)) >= 0 ? Number(raw.settings.interval) : 30;
+          if (Array.isArray(raw.settings.favorites)) {
+            s.settings.favorites = raw.settings.favorites.filter(function (id, i, a) {
+              return a.indexOf(id) === i && D.exercises.some(function (e) { return e.id === id; });
+            }).slice(0, 12);
+          }
+        }
+        s.demo = !!raw.demo;
+      }
+    } catch (e) { /* first visit or storage blocked */ }
+    return s;
+  }
+  function saveState() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    catch (e) {
+      if (!memoryOnly) { memoryOnly = true; toast("Your browser blocked saving. Progress will be lost when you close this page."); }
+    }
+  }
+  function today() {
+    var k = keyOffset(0);
+    if (!state.days[k]) state.days[k] = emptyDay();
+    return state.days[k];
+  }
+
+
+  /* ==================== tiny DOM helpers ==================== */
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined && text !== null) e.textContent = text;
+    return e;
+  }
+  function btn(label, cls, onClick) {
+    var b = el("button", cls || "btn", label);
+    b.type = "button";
+    if (onClick) b.addEventListener("click", onClick);
+    return b;
+  }
+  function reducedMotion() {
+    try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; }
+  }
+  function scrollToId(id) {
+    var t = $(id);
+    if (!t) return;
+    try { t.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "start" }); }
+    catch (e) { t.scrollIntoView(); }
+  }
+  function dayFull(key) {
+    try { return keyToDate(key).toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" }); }
+    catch (e) { return key; }
+  }
+  function makeTable(headers, rows) {
+    var wrap = el("div", "table-wrap");
+    var t = el("table");
+    var tr = el("tr");
+    headers.forEach(function (h) { tr.appendChild(el("th", null, h)); });
+    t.appendChild(el("thead")).appendChild(tr);
+    var tb = el("tbody");
+    rows.forEach(function (r) {
+      var row = el("tr");
+      r.forEach(function (c) { row.appendChild(el("td", null, String(c))); });
+      tb.appendChild(row);
+    });
+    t.appendChild(tb);
+    wrap.appendChild(t);
+    return wrap;
+  }
+  function barRow(label, right, pct) {
+    var row = el("div", "bar-row");
+    var top = el("div", "bar-top");
+    top.appendChild(el("span", null, label));
+    top.appendChild(el("strong", null, right));
+    row.appendChild(top);
+    var bar = el("div", "progress");
+    var fill = el("div", "progress-bar");
+    fill.style.width = Math.max(0, Math.min(100, pct)) + "%";
+    bar.appendChild(fill);
+    row.appendChild(bar);
+    return row;
+  }
+
+  /* ==================== modal ==================== */
+
+  var modalKind = null, modalArg = null, lastFocus = null;
+
+  function openModal(node, kind, arg) {
+    var body = $("modalBody");
+    body.textContent = "";
+    body.appendChild(node);
+    modalKind = kind || null;
+    modalArg = arg || null;
+    if ($("modal").hidden) lastFocus = document.activeElement;
+    $("modal").hidden = false;
+    document.body.classList.add("modal-open");
+    $("modalCard").scrollTop = 0;
+    try { $("modalCard").focus(); } catch (e) { /* optional */ }
+  }
+  function closeModal() {
+    if ($("modal").hidden) return;
+    $("modal").hidden = true;
+    document.body.classList.remove("modal-open");
+    modalKind = null; modalArg = null;
+    try { if (lastFocus && lastFocus.focus) lastFocus.focus(); } catch (e) { /* optional */ }
+  }
+  function modalHead(icon, title, sub) {
+    var h = el("div", "m-head");
+    h.appendChild(el("div", "m-icon", icon));
+    var t = el("div");
+    var h3 = el("h3", null, title);
+    h3.id = "modalTitleAnchor";
+    t.appendChild(h3);
+    if (sub) t.appendChild(el("span", "chip", sub));
+    h.appendChild(t);
+    return h;
+  }
+  function goButton(label, id) {
+    return btn(label, "btn", function () { closeModal(); scrollToId(id); });
+  }
+
+  /* ---- exercise detail ---- */
+  function openExercise(id) {
+    var ex = exById[id];
+    if (!ex) return;
+    var fav = state.settings.favorites.indexOf(id) >= 0;
+    var box = el("div");
+    var c = el("div", "m-center");
+    c.appendChild(el("div", "exercise-icon anim-" + ex.anim + " playing", ex.icon));
+    box.appendChild(c);
+    var h = el("h3", null, ex.title);
+    h.id = "modalTitleAnchor";
+    h.style.margin = "0 0 6px";
+    h.style.color = "var(--dark-green)";
+    h.style.textAlign = "center";
+    box.appendChild(h);
+    var chips = el("div", "m-center");
+    chips.appendChild(el("span", "chip", ex.area + " · " + ex.seconds + " seconds"));
+    box.appendChild(chips);
+    var ol = el("ol", "m-list");
+    ex.steps.forEach(function (s) { ol.appendChild(el("li", null, s)); });
+    box.appendChild(ol);
+    box.appendChild(el("p", "caution", "⚠ " + ex.caution));
+    var acts = el("div", "m-actions");
+    acts.appendChild(btn("▶ Start now", "btn", function () { startSingle(id); }));
+    acts.appendChild(btn(fav ? "★ In My Routine" : "☆ Add to My Routine", "btn btn-light", function () { toggleFav(id); }));
+    acts.appendChild(btn("Close", "btn btn-light", closeModal));
+    box.appendChild(acts);
+    openModal(box, "exercise", id);
+  }
+
+  /* ---- badge detail ---- */
+  var badgeUnits = { first: "breaks logged", goal: "breaks in one day", streak: "days in a row", week: "breaks in the last 7 days", paper: "pages tracked", travel: "trips tracked", posture: "% best posture check" };
+  var badgeGoto = { first: "exercises", goal: "exercises", streak: "exercises", week: "exercises", paper: "carbon", travel: "carbon", posture: "posture" };
+  var badgeTips = {
+    first: "Run any routine to the end, or tap + Log a break on the dashboard.",
+    goal: "Complete your daily break goal in one day.",
+    streak: "Log at least one break on 3 days in a row.",
+    week: "Spread 20 breaks across the last 7 days.",
+    paper: "Add the pages you avoided printing in the Carbon tracker.",
+    travel: "Record trips you avoided, for example by joining online meetings.",
+    posture: "Tick your posture self-check items and save a score of 80% or more."
+  };
+
+  function openBadge(id) {
+    var b = null;
+    D.badges.forEach(function (x) { if (x.id === id) b = x; });
+    if (!b) return;
+    var earned = earnedBadges(state.days)[id];
+    var pr = badgeProgress(state.days)[id];
+    var shown = Math.min(pr.value, pr.target);
+    var box = el("div");
+    box.appendChild(modalHead(b.icon, b.title, earned ? "Earned" : "Not yet earned"));
+    box.appendChild(el("p", null, b.desc));
+    box.appendChild(barRow("Progress", round2(shown) + " / " + pr.target + " " + badgeUnits[id], pr.value / pr.target * 100));
+    box.appendChild(el("p", "note", earned ? "Nice work. Badges are worked out from your saved log, so they update if you change or clear your data." : "How to earn it: " + badgeTips[id]));
+    var acts = el("div", "m-actions");
+    if (!earned) acts.appendChild(goButton("Take me there", badgeGoto[id]));
+    acts.appendChild(btn("Close", "btn btn-light", closeModal));
+    box.appendChild(acts);
+    openModal(box, "badge", id);
+  }
+
+  /* ---- dashboard detail views ---- */
+  var advice = {
+    breaks: "Do one more 3-minute routine each work block.",
+    paper: "Share files digitally and add the pages you avoided printing.",
+    travel: "Choose an online meeting for one short trip and record it.",
+    posture: "Save a posture self-check on more days."
+  };
+  var adviceGoto = { breaks: "exercises", paper: "carbon", travel: "carbon", posture: "posture" };
+
+  function openDetail(kind) {
+    var keys = lastDays(7).slice().reverse();
+    var wk = weekTotals(state.days);
+    var box = el("div");
+    var goto = null, gotoLabel = "";
+
+    if (kind === "breaks" || kind === "pages") {
+      var isB = kind === "breaks";
+      box.appendChild(modalHead(isB ? "🧘" : "📄", isB ? "Breaks, last 7 days" : "Pages avoided, last 7 days", isB ? "Goal: " + D.dailyBreakGoal + " per day" : null));
+      var rows = keys.map(function (k) {
+        var d = state.days[k] || emptyDay();
+        return isB ? [dayFull(k), d.breaks, d.breaks >= D.dailyBreakGoal ? "Goal met" : "-"] : [dayFull(k), d.pages, d.pages ? round2(d.pages * D.factors.kgCO2ePerPage).toFixed(2) + " kg" : "-"];
+      });
+      box.appendChild(makeTable(isB ? ["Day", "Breaks", "Goal"] : ["Day", "Pages", "Paper CO₂e"], rows));
+      var daysGoal = keys.filter(function (k) { return state.days[k] && state.days[k].breaks >= D.dailyBreakGoal; }).length;
+      box.appendChild(el("p", "muted", isB
+        ? "Total " + wk.breaks + " breaks, average " + round2(wk.breaks / 7).toFixed(1) + " per day, goal met on " + daysGoal + " of 7 days."
+        : "Total " + wk.pages + " pages avoided this week."));
+      goto = isB ? "exercises" : "carbon"; gotoLabel = isB ? "Do a break now" : "Open carbon tracker";
+    } else if (kind === "co2") {
+      box.appendChild(modalHead("🌿", "Estimated CO₂e, last 7 days", "Illustrative"));
+      var crow = keys.map(function (k) {
+        var d = state.days[k] || emptyDay();
+        var p = computeCo2(d.pages, d.trips, d.km, d.mode);
+        return [dayFull(k), p.paper.toFixed(2), p.travel.toFixed(2), d.co2.toFixed(2)];
+      });
+      box.appendChild(makeTable(["Day", "Paper kg", "Travel kg", "Total kg"], crow));
+      box.appendChild(el("p", "muted", "Week total: " + round2(wk.co2).toFixed(2) + " kg CO₂e."));
+      box.appendChild(el("p", "note", "Estimates use illustrative emission factors and self-reported inputs. Clinic visits are never converted into carbon savings."));
+      goto = "carbon"; gotoLabel = "Open carbon tracker";
+    } else if (kind === "streak") {
+      box.appendChild(modalHead("🔥", "Day streak", null));
+      box.appendChild(barRow("Current streak", currentStreak(state.days) + " day(s)", currentStreak(state.days) / 7 * 100));
+      box.appendChild(barRow("Best streak", longestStreak(state.days) + " day(s)", longestStreak(state.days) / 7 * 100));
+      box.appendChild(el("p", "note", "A streak counts consecutive days with at least one logged break. If today has no break yet, yesterday's streak is kept until the day ends."));
+      goto = "exercises"; gotoLabel = "Do a break now";
+    } else if (kind === "score") {
+      var sc = computeScore(wk);
+      box.appendChild(modalHead("⭐", "Weekly Green Score: " + sc.total + " / 100", "Last 7 days"));
+      sc.parts.forEach(function (p) {
+        box.appendChild(barRow(p.short + ": " + p.value + " of " + p.target, round2(p.points).toFixed(1) + " / " + p.max + " pts", p.points / p.max * 100));
+      });
+      var weakest = sc.parts.slice().sort(function (a, b) { return (b.max - b.points) - (a.max - a.points); })[0];
+      if (weakest && weakest.max - weakest.points > 0.05) {
+        box.appendChild(el("p", "note", "Biggest gain: " + advice[weakest.key]));
+        goto = adviceGoto[weakest.key]; gotoLabel = "Take me there";
+      } else {
+        box.appendChild(el("p", "note", "Full marks this week. Keep it up!"));
+      }
+      box.appendChild(el("p", "muted small", "Each part earns min(value / target, 1) × its maximum points. The four parts add up to 100."));
+    } else {
+      return;
+    }
+    var acts = el("div", "m-actions");
+    if (goto) acts.appendChild(goButton(gotoLabel, goto));
+    acts.appendChild(btn("Close", "btn btn-light", closeModal));
+    box.appendChild(acts);
+    openModal(box, "detail", kind);
+  }
+
+  function openMethod(key) {
+    var m = D.methodDetails && D.methodDetails[key];
+    if (!m) return;
+    var box = el("div");
+    box.appendChild(modalHead(m.icon, m.title, null));
+    var ul = el("ul", "m-list");
+    m.points.forEach(function (p) { ul.appendChild(el("li", null, p)); });
+    box.appendChild(ul);
+    var acts = el("div", "m-actions");
+    acts.appendChild(btn("Close", "btn btn-light", closeModal));
+    box.appendChild(acts);
+    openModal(box, "method", key);
+  }
+
+  /* ---- day log ---- */
+  function ensureDay(key) {
+    if (!state.days[key]) state.days[key] = emptyDay();
+    return state.days[key];
+  }
+
+  function renderLog() {
+    var body = $("logBody");
+    if (!body) return;
+    body.textContent = "";
+    lastDays(7).slice().reverse().forEach(function (k, i) {
+      var d = state.days[k] || emptyDay();
+      var tr = el("tr", "row-click" + (i === 0 ? " row-today" : ""));
+      var first = el("td");
+      var b = btn(dayFull(k) + (i === 0 ? " (today)" : ""), "text-btn", function (ev) { ev.stopPropagation(); openDay(k); });
+      b.style.padding = "0";
+      first.appendChild(b);
+      tr.appendChild(first);
+      [d.breaks, d.pages, d.trips, round2(d.co2).toFixed(2)].forEach(function (v) { tr.appendChild(el("td", null, String(v))); });
+      tr.addEventListener("click", function () { openDay(k); });
+      body.appendChild(tr);
+    });
+  }
+
+  function openDay(key) {
+    var d = ensureDay(key);
+    var box = el("div");
+    box.appendChild(modalHead("📅", dayFull(key), key === keyOffset(0) ? "Today" : null));
+    var step = el("div", "stepper");
+    var count = el("strong", null, String(d.breaks));
+    var minus = btn("−", "btn btn-light", function () {
+      var x = ensureDay(key);
+      if (x.breaks > 0) { x.breaks--; count.textContent = String(x.breaks); saveState(); render(); }
+    });
+    minus.setAttribute("aria-label", "Remove one break");
+    var plus = btn("+", "btn", function () {
+      var x = ensureDay(key);
+      if (x.breaks < 50) { x.breaks++; count.textContent = String(x.breaks); saveState(); render(); }
+    });
+    plus.setAttribute("aria-label", "Add one break");
+    step.appendChild(el("span", null, "Breaks"));
+    step.appendChild(minus); step.appendChild(count); step.appendChild(plus);
+    box.appendChild(step);
+    var parts = computeCo2(d.pages, d.trips, d.km, d.mode);
+    box.appendChild(makeTable(["Item", "Value"], [
+      ["Pages avoided", d.pages],
+      ["Trips avoided", d.trips + (d.trips ? " × " + d.km + " km" : "")],
+      ["Estimated CO₂e", round2(d.co2).toFixed(2) + " kg"],
+      ["Posture check", d.checks ? d.checkPct + "%" : "-"],
+      ["Clinic visit (potential only)", d.clinic ? "Yes" : "No"]
+    ]));
+    box.appendChild(el("p", "muted small", parts.total > 0 ? "Pages, trips and posture are edited from the Carbon and Posture sections (today only)." : "Use the Carbon tracker to add pages and trips for today."));
+    var acts = el("div", "m-actions");
+    var clear = btn("Clear this day", "btn btn-light", null);
+    var armed = false;
+    clear.addEventListener("click", function () {
+      if (!armed) { armed = true; clear.textContent = "Tap again to confirm"; return; }
+      delete state.days[key];
+      saveState();
+      if (key === keyOffset(0)) syncForm();
+      render();
+      closeModal();
+      toast("Day cleared.");
+    });
+    acts.appendChild(clear);
+    acts.appendChild(btn("Close", "btn btn-light", closeModal));
+    box.appendChild(acts);
+    openModal(box, "day", key);
+  }
+
+  /* ---- insights ---- */
+  function computeInsights(days) {
+    var keys = lastDays(7);
+    var prevKeys = [];
+    for (var i = 13; i >= 7; i--) prevKeys.push(keyOffset(i));
+    var sum = function (ks, f) { return ks.reduce(function (s, k) { return s + (days[k] ? days[k][f] : 0); }, 0); };
+    var thisB = sum(keys, "breaks"), prevB = sum(prevKeys, "breaks");
+    var out = [];
+
+    var cmp;
+    if (prevB > 0) {
+      var ch = Math.round((thisB - prevB) / prevB * 100);
+      cmp = ch === 0 ? "Same as the previous 7 days." : (ch > 0 ? "Up " : "Down ") + Math.abs(ch) + "% from the previous 7 days (" + prevB + ").";
+    } else {
+      cmp = "No data for the previous 7 days to compare.";
+    }
+    out.push({ icon: "📈", title: thisB + " breaks this week", text: "Average " + round2(thisB / 7).toFixed(1) + " per day. " + cmp, goto: "exercises", label: "Do a break" });
+
+    var goalDays = keys.filter(function (k) { return days[k] && days[k].breaks >= D.dailyBreakGoal; }).length;
+    var best = null;
+    keys.forEach(function (k) { if (days[k] && days[k].breaks > 0 && (!best || days[k].breaks > days[best].breaks)) best = k; });
+    out.push({ icon: "🎯", title: "Daily goal met on " + goalDays + " of 7 days", text: best ? "Best day: " + dayFull(best) + " with " + days[best].breaks + " breaks." : "No breaks logged yet this week." });
+
+    out.push({ icon: "🔥", title: "Streak: " + currentStreak(days) + " day(s)", text: "Your best streak so far is " + longestStreak(days) + " day(s)." });
+
+    var co2 = sum(keys, "co2");
+    out.push({ icon: "🌿", title: round2(co2).toFixed(2) + " kg CO₂e estimated", text: sum(keys, "pages") + " pages and " + sum(keys, "trips") + " trips avoided this week (illustrative factors).", goto: "carbon", label: "Open tracker" });
+
+    var n = 0, sb = 0, sa = 0;
+    Object.keys(days).forEach(function (k) { days[k].pain.forEach(function (p) { n++; sb += p.before; sa += p.after; }); });
+    if (n) {
+      var db = round2(sb / n), da = round2(sa / n);
+      out.push({ icon: "🩺", title: "Self-rated discomfort: " + db.toFixed(1) + " → " + da.toFixed(1), text: "Average before and after " + n + " rated session" + (n === 1 ? "" : "s") + ". This is a personal rating, not a medical measurement." });
+    } else {
+      out.push({ icon: "🩺", title: "No discomfort ratings yet", text: "Move the discomfort sliders next to the timer before and after a routine to build your own before/after data." });
+    }
+
+    var sc = computeScore(weekTotals(days));
+    var weakest = sc.parts.slice().sort(function (a, b) { return (b.max - b.points) - (a.max - a.points); })[0];
+    if (weakest && weakest.max - weakest.points > 0.05) {
+      out.push({ icon: "💡", title: "Next best action", text: advice[weakest.key] + " (+" + round2(weakest.max - weakest.points).toFixed(0) + " pts possible)", goto: adviceGoto[weakest.key], label: "Take me there" });
+    } else {
+      out.push({ icon: "🏆", title: "Full Green Score", text: "You reached every weekly target. Keep the habit going." });
+    }
+    return out;
+  }
+
+  function renderInsights() {
+    var wrap = $("insights");
+    if (!wrap) return;
+    wrap.textContent = "";
+    computeInsights(state.days).forEach(function (it) {
+      var c = el("div", "insight");
+      c.appendChild(el("div", "i-icon", it.icon));
+      c.appendChild(el("h4", null, it.title));
+      c.appendChild(el("p", null, it.text));
+      if (it.goto) c.appendChild(btn(it.label + " →", "text-btn", function () { scrollToId(it.goto); }));
+      wrap.appendChild(c);
+    });
+  }
+
+  /* ---- one click handler for links and "open detail" attributes ---- */
+  function onDocumentClick(ev) {
+    var t = ev.target;
+    if (!t || !t.closest) return;
+    var a = t.closest('a[href^="#"]');
+    if (a) {
+      var id = a.getAttribute("href").slice(1);
+      if (id && $(id)) { ev.preventDefault(); scrollToId(id); }
+      return;
+    }
+    var m = t.closest("[data-method]");
+    if (m) { openMethod(m.getAttribute("data-method")); return; }
+    var dt = t.closest("[data-detail]");
+    if (dt) {
+      var isButton = dt.tagName === "BUTTON";
+      if (!isButton && t.closest("button, a, input, select, textarea")) return;   // let inner controls do their own job
+      openDetail(dt.getAttribute("data-detail"));
+    }
+  }
+
+  function onModalKey(ev) {
+    if ($("modal").hidden) return;
+    if (ev.key === "Escape") { closeModal(); return; }
+    if (ev.key !== "Tab") return;
+    var f = $("modalCard").querySelectorAll("button, a[href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (ev.shiftKey && (document.activeElement === first || document.activeElement === $("modalCard"))) { ev.preventDefault(); last.focus(); }
+    else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+  }
+
+
+  /* ==================== toast, sound ==================== */
+
+  function toast(message, actions, ms) {
+    var area = $("toastArea");
+    if (!area) return;
+    while (area.children.length >= 3) area.removeChild(area.firstChild);
+    var el = document.createElement("div");
+    el.className = "toast";
+    var span = document.createElement("span");
+    span.textContent = message;
+    el.appendChild(span);
+    (actions || []).forEach(function (a) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = a.label;
+      b.addEventListener("click", function () { a.onClick(); if (el.parentNode) el.parentNode.removeChild(el); });
+      el.appendChild(b);
+    });
+    area.appendChild(el);
+    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, ms || 5000);
+  }
+
+  var audioCtx = null;
+  function beep() {
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) {
+        audioCtx = audioCtx || new AC();
+        var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        o.connect(g); g.connect(audioCtx.destination);
+        o.frequency.value = 660; g.gain.value = 0.05;
+        o.start(); o.stop(audioCtx.currentTime + 0.18);
+      }
+    } catch (e) { /* sound is optional */ }
+    try { if (navigator.vibrate) navigator.vibrate(150); } catch (e2) { /* optional */ }
+  }
+
+  /* ==================== banner & theme ==================== */
+
+  function renderBanner() {
+    var b = $("demoBanner"), t = $("demoBannerText");
+    if (!b || !t) return;
+    b.classList.toggle("is-demo", !!state.demo);
+    t.textContent = state.demo
+      ? "DEMO MODE: the data shown is simulated sample data, not real staff, institutional or measured data. Use Reset All Progress to clear it."
+      : "All carbon figures are illustrative estimates, not verified measurements.";
+  }
+
+  function systemPrefersDark() {
+    try { return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches; }
+    catch (e) { return false; }
+  }
+  function effectiveTheme() {
+    var a = document.documentElement.getAttribute("data-theme");
+    if (a === "dark" || a === "light") return a;
+    return systemPrefersDark() ? "dark" : "light";
+  }
+  function applyTheme() {
+    if (state.settings.theme && document.documentElement.getAttribute("data-theme") !== state.settings.theme) {
+      document.documentElement.setAttribute("data-theme", state.settings.theme);
+    }
+    var btn = $("themeBtn");
+    if (btn) btn.textContent = effectiveTheme() === "dark" ? "☀️" : "🌙";
+  }
+  function onThemeChanged() { applyTheme(); destroyCharts(); render(); }
+
+  /* ==================== exercise runner ==================== */
+
+  var exById = {};
+  D.exercises.forEach(function (e) { exById[e.id] = e; });
+
+  var runner = { routineId: null, seq: [], idx: 0, total: 45, secondsLeft: 45, timer: null, finished: false, painTouched: false };
+
+  function fmt(sec) { sec = Math.max(0, sec); return pad(Math.floor(sec / 60)) + ":" + pad(sec % 60); }
+  function runnerMsg(t) { var m = $("timerMessage"); if (m) m.textContent = t; }
+
+  function durationText(items) {
+    var total = items.reduce(function (s, id) { return s + exById[id].seconds; }, 0);
+    var m = Math.floor(total / 60), sec = total % 60;
+    return m === 0 ? sec + " s" : m + " min" + (sec ? " " + sec + " s" : "");
+  }
+
+  function allRoutines() {
+    var list = D.routines.slice();
+    var f = state.settings.favorites;
+    if (f.length) {
+      list.push({ id: "mine", title: "My Routine ⭐", blurb: f.length + " starred exercise" + (f.length === 1 ? "" : "s"), items: f.slice() });
+    }
+    return list;
+  }
+
+  function renderTabs() {
+    var wrap = $("routineTabs");
+    wrap.textContent = "";
+    allRoutines().forEach(function (r) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "routine-tab" + (runner.routineId === r.id ? " active" : "");
+      b.setAttribute("role", "tab");
+      b.setAttribute("aria-selected", runner.routineId === r.id ? "true" : "false");
+      var s1 = document.createElement("strong"); s1.textContent = r.title;
+      var s2 = document.createElement("span"); s2.textContent = r.blurb + " · " + durationText(r.items);
+      b.appendChild(s1); b.appendChild(s2);
+      b.addEventListener("click", function () { setSequence(r.items, r.id); runnerMsg("Ready when you are."); });
+      wrap.appendChild(b);
+    });
+  }
+
+  function setSequence(ids, routineId) {
+    pauseRunner();
+    runner.routineId = routineId;
+    runner.seq = ids.slice();
+    runner.idx = 0;
+    runner.finished = false;
+    loadExercise();
+    renderTabs();
+  }
+
+  function loadExercise() {
+    var ex = exById[runner.seq[runner.idx]];
+    runner.total = ex.seconds;
+    runner.secondsLeft = ex.seconds;
+    renderRunner();
+  }
+
+  function renderRunner() {
+    var ex = exById[runner.seq[runner.idx]];
+    if (!ex) return;
+    var running = !!runner.timer;
+
+    var icon = $("exerciseIcon");
+    icon.textContent = ex.icon;
+    icon.className = "exercise-icon anim-" + ex.anim + (running ? " playing" : "");
+    $("exerciseArea").textContent = ex.area;
+    $("exerciseTitle").textContent = ex.title;
+    $("seqInfo").textContent = runner.seq.length > 1
+      ? "Exercise " + (runner.idx + 1) + " of " + runner.seq.length
+      : "Single exercise";
+
+    var dots = $("seqDots");
+    dots.textContent = "";
+    if (runner.seq.length > 1) {
+      runner.seq.forEach(function (_, i) {
+        var s = document.createElement("button");
+        s.type = "button";
+        if (i < runner.idx || (runner.finished && i <= runner.idx)) s.className = "done";
+        else if (i === runner.idx) s.className = "now";
+        s.setAttribute("aria-label", "Go to exercise " + (i + 1) + ": " + exById[runner.seq[i]].title);
+        s.addEventListener("click", function () { jumpRunner(i); });
+        dots.appendChild(s);
+      });
+    }
+
+    var ol = $("exerciseSteps");
+    ol.textContent = "";
+    ex.steps.forEach(function (st) {
+      var li = document.createElement("li");
+      li.textContent = st;
+      ol.appendChild(li);
+    });
+    $("exerciseCaution").textContent = "⚠ " + ex.caution;
+
+    updateTimerUi();
+    var start = $("startTimer");
+    start.textContent = running ? "Pause" : (runner.finished ? "Restart" : (runner.secondsLeft < runner.total ? "Resume" : "Start"));
+    $("prevExercise").disabled = runner.idx === 0;
+    $("nextExercise").disabled = runner.idx >= runner.seq.length - 1;
+  }
+
+  function updateTimerUi() {
+    $("timer").textContent = fmt(runner.secondsLeft);
+    var pct = runner.total ? (1 - runner.secondsLeft / runner.total) * 100 : 0;
+    $("timerBar").style.width = Math.min(100, Math.max(0, pct)) + "%";
+  }
+
+  function pauseRunner() {
+    if (runner.timer) { clearInterval(runner.timer); runner.timer = null; }
+    if (runner.seq.length) renderRunner();
+  }
+
+  function startRunner() {
+    if (runner.timer) { pauseRunner(); runnerMsg("Paused."); return; }
+    if (runner.finished) { runner.idx = 0; runner.finished = false; loadExercise(); }
+    runner.endAt = Date.now() + runner.secondsLeft * 1000;     // real clock, so a throttled tab stays accurate
+    runner.timer = setInterval(tickRunner, 250);
+    runnerMsg("Move gently and breathe normally.");
+    renderRunner();
+  }
+
+  function tickRunner() {
+    runner.secondsLeft = Math.max(0, Math.ceil((runner.endAt - Date.now()) / 1000));
+    if (runner.secondsLeft > 0) { updateTimerUi(); return; }
+    beep();
+    if (runner.idx < runner.seq.length - 1) {
+      runner.idx++;
+      loadExercise();
+      runner.endAt = Date.now() + runner.secondsLeft * 1000;
+      runnerMsg("Next: " + exById[runner.seq[runner.idx]].title);
+    } else {
+      finishRunner();
+    }
+  }
+
+  function finishRunner() {
+    clearInterval(runner.timer);
+    runner.timer = null;
+    runner.finished = true;
+    runner.secondsLeft = 0;
+    if (runner.painTouched) {
+      today().pain.push({ before: Number($("painBefore").value), after: Number($("painAfter").value) });
+      runner.painTouched = false;
+    }
+    if (runner.seq.length > 1) {
+      today().breaks++;
+      saveState();
+      render();
+      runnerMsg("Routine complete! Break logged. Well done.");
+      toast("🎉 Routine complete. Break logged!");
+    } else {
+      saveState();
+      render();
+      runnerMsg("Exercise complete. Use '+ Log a break' if you want to count it.");
+    }
+    renderRunner();
+  }
+
+  function stepRunner(delta) {
+    var next = runner.idx + delta;
+    if (next < 0 || next >= runner.seq.length) return;
+    pauseRunner();
+    runner.idx = next;
+    runner.finished = false;
+    loadExercise();
+    runnerMsg("Ready when you are.");
+  }
+
+  function jumpRunner(i) {
+    if (i < 0 || i >= runner.seq.length) return;
+    pauseRunner();
+    runner.idx = i;
+    runner.finished = false;
+    loadExercise();
+    runnerMsg("Ready when you are.");
+  }
+
+  function resetRunner() {
+    pauseRunner();
+    runner.finished = false;
+    loadExercise();
+    runnerMsg("Timer reset.");
+  }
+
+  /* ---------- library ---------- */
+  var libFilter = "All";
+  var libQuery = "";
+
+  function renderFilters() {
+    var areas = ["All"];
+    D.exercises.forEach(function (e) { if (areas.indexOf(e.area) < 0) areas.push(e.area); });
+    var wrap = $("filters");
+    wrap.textContent = "";
+    areas.forEach(function (a) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "filter-btn" + (a === libFilter ? " active" : "");
+      b.textContent = a;
+      b.setAttribute("aria-pressed", a === libFilter ? "true" : "false");
+      b.addEventListener("click", function () { libFilter = a; renderFilters(); renderLibrary(); });
+      wrap.appendChild(b);
+    });
+  }
+
+  function matchesQuery(e) {
+    if (!libQuery) return true;
+    var hay = (e.title + " " + e.area + " " + e.steps.join(" ")).toLowerCase();
+    return libQuery.toLowerCase().split(/\s+/).every(function (w) { return hay.indexOf(w) >= 0; });
+  }
+
+  function renderLibrary() {
+    var grid = $("libGrid");
+    grid.textContent = "";
+    var list = D.exercises.filter(function (e) { return (libFilter === "All" || e.area === libFilter) && matchesQuery(e); });
+    $("libCount").textContent = "Showing " + list.length + " of " + D.exercises.length + " exercises. Tap a card to open it.";
+    if (!list.length) grid.appendChild(el("p", "muted", "No exercises match. Try another word or choose All."));
+    list.forEach(function (e) {
+      var fav = state.settings.favorites.indexOf(e.id) >= 0;
+      var card = el("div", "lib-card");
+      var open = el("button", "lib-open");
+      open.type = "button";
+      open.setAttribute("aria-label", "Open " + e.title);
+      open.appendChild(el("div", "lib-icon", e.icon));
+      open.appendChild(el("h4", null, e.title));
+      open.appendChild(el("span", "chip", e.area));
+      open.appendChild(el("p", null, e.steps[0]));
+      open.addEventListener("click", function () { openExercise(e.id); });
+      var foot = el("div", "lib-foot");
+      foot.appendChild(btn("Start now (" + e.seconds + "s)", "btn", function () { startSingle(e.id); }));
+      var star = el("button", "star-btn" + (fav ? " on" : ""), fav ? "★" : "☆");
+      star.type = "button";
+      star.setAttribute("aria-pressed", fav ? "true" : "false");
+      star.setAttribute("aria-label", (fav ? "Remove " : "Add ") + e.title + (fav ? " from" : " to") + " My Routine");
+      star.title = fav ? "Remove from My Routine" : "Add to My Routine";
+      star.addEventListener("click", function () { toggleFav(e.id); });
+      foot.appendChild(star);
+      card.appendChild(open); card.appendChild(foot);
+      grid.appendChild(card);
+    });
+  }
+
+  function startSingle(id) {
+    closeModal();
+    setSequence([id], null);
+    scrollToId("exercises");
+    startRunner();
+  }
+
+  function toggleFav(id) {
+    var f = state.settings.favorites;
+    var i = f.indexOf(id);
+    if (i >= 0) f.splice(i, 1); else f.push(id);
+    saveState();
+    renderLibrary();
+    if (runner.routineId === "mine") {
+      if (f.length) setSequence(f.slice(), "mine"); else setSequence(D.routines[0].items, D.routines[0].id);
+    } else {
+      renderTabs();
+    }
+    toast(i >= 0 ? "Removed from My Routine." : "Added to My Routine. Find it in the routine tabs.");
+    if (!$("modal").hidden && modalKind === "exercise" && modalArg === id) openExercise(id);
+  }
+
+  /* ==================== posture ==================== */
+
+  function showSpot(name) {
+    var s = D.postureSpots[name];
+    if (!s) return;
+    $("spotTitle").textContent = s.title;
+    $("spotText").textContent = s.text;
+    document.querySelectorAll(".spot").forEach(function (g) {
+      g.classList.toggle("active", g.getAttribute("data-spot") === name);
+    });
+  }
+
+  function initPosture() {
+    document.querySelectorAll(".spot").forEach(function (g) {
+      var name = g.getAttribute("data-spot");
+      g.addEventListener("click", function () { showSpot(name); });
+      g.addEventListener("keydown", function (ev) {
+        if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); showSpot(name); }
+      });
+    });
+    showSpot("monitor");
+
+    var box = $("checklist");
+    D.postureChecklist.forEach(function (text, i) {
+      var label = document.createElement("label");
+      label.className = "check-item";
+      var cb = document.createElement("input");
+      cb.type = "checkbox"; cb.id = "chk" + i;
+      cb.addEventListener("change", updateCheck);
+      var span = document.createElement("span"); span.textContent = text;
+      label.appendChild(cb); label.appendChild(span);
+      box.appendChild(label);
+    });
+    $("saveCheck").addEventListener("click", saveCheck);
+  }
+
+  function checkPercent() {
+    var boxes = document.querySelectorAll("#checklist input");
+    var n = 0;
+    boxes.forEach(function (b) { if (b.checked) n++; });
+    return boxes.length ? Math.round(n / boxes.length * 100) : 0;
+  }
+  function updateCheck() {
+    var pct = checkPercent();
+    $("checkScore").textContent = pct + "%";
+    $("checkBar").style.width = pct + "%";
+    $("checkMsg").textContent = pct >= 80 ? "Great set-up!" : pct >= 50 ? "Good start. Fix a few more items." : "Try adjusting your workstation using the guide.";
+  }
+  function saveCheck() {
+    var d = today();
+    d.checks++;
+    d.checkPct = checkPercent();
+    saveState();
+    render();
+    toast("Posture check saved (" + d.checkPct + "%).");
+  }
+
+  /* ==================== reminders ==================== */
+
+  var rem = { on: false, nextAt: 0, timer: null };
+
+  function remMinutes() { return Number($("reminderInterval").value) || 30; }
+  function remStatus(t) { $("reminderStatus").textContent = t; }
+
+  function renderCountdown() {
+    if (!rem.on) { $("countdown").textContent = "--:--"; return; }
+    var left = Math.max(0, Math.round((rem.nextAt - Date.now()) / 1000));
+    $("countdown").textContent = fmt(left);
+  }
+
+  function remTick() {
+    if (Date.now() >= rem.nextAt) {
+      fireReminder();
+      rem.nextAt = Date.now() + remMinutes() * 60000;
+    }
+    renderCountdown();
+  }
+
+  function fireReminder() {
+    var msg = "Time for a gentle movement break. Stand up, stretch, and rest your eyes.";
+    beep();
+    try {
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("EcoErgo reminder", { body: msg });
+      }
+    } catch (e) { /* notifications are optional */ }
+    toast("⏰ " + msg, [
+      { label: "Start", onClick: function () { scrollToId("exercises"); } },
+      { label: "Snooze 5 min", onClick: function () { if (rem.on) rem.nextAt = Date.now() + 5 * 60000; } }
+    ], 20000);
+  }
+
+  function enableReminder() {
+    var go = function () {
+      rem.on = true;
+      rem.nextAt = Date.now() + remMinutes() * 60000;
+      if (rem.timer) clearInterval(rem.timer);
+      rem.timer = setInterval(remTick, 1000);
+      remStatus("Reminder on: every " + remMinutes() + " minute" + (remMinutes() === 1 ? "" : "s") + " while this page stays open.");
+      renderCountdown();
+    };
+    try {
+      if ("Notification" in window && Notification.permission === "default") {
+        var p = Notification.requestPermission();
+        if (p && p.then) { p.then(go, go); return; }
+      }
+    } catch (e) { /* fall through */ }
+    go();
+  }
+
+  function disableReminder() {
+    rem.on = false;
+    if (rem.timer) clearInterval(rem.timer);
+    rem.timer = null;
+    remStatus("Reminders are off.");
+    renderCountdown();
+  }
+
+  var tipIdx = { posture: 0, eco: 0 };
+  function renderTips() {
+    $("postureTip").textContent = D.postureTips[tipIdx.posture % D.postureTips.length];
+    $("ecoTip").textContent = D.ecoTips[tipIdx.eco % D.ecoTips.length];
+  }
+
+  /* ==================== carbon form ==================== */
+
+  function syncForm() {
+    var d = today();
+    $("pages").value = d.pages;
+    $("trips").value = d.trips;
+    $("distance").value = d.km;
+    $("mode").value = d.mode;
+    $("clinic").checked = !!d.clinic;
+  }
+
+  function submitCarbon(ev) {
+    ev.preventDefault();
+    var err = $("carbonError");
+    err.textContent = "";
+    var fields = [["pages", 10000], ["trips", 100], ["distance", 500]];
+    for (var i = 0; i < fields.length; i++) {
+      var raw = $(fields[i][0]).value;
+      var v = Number(raw);
+      if (raw === "" || !isFinite(v) || v < 0) { err.textContent = "Please enter zero or a positive number in every field."; return; }
+      if (v > fields[i][1]) { err.textContent = "That value looks too large. Maximum allowed is " + fields[i][1] + "."; return; }
+    }
+    var pages = Math.floor(Number($("pages").value));
+    var trips = Math.floor(Number($("trips").value));
+    var km = Number($("distance").value);
+    if (trips > 0 && km === 0) { err.textContent = "Enter the distance per trip so travel can be estimated."; return; }
+
+    var d = today();
+    d.pages = pages; d.trips = trips; d.km = trips > 0 ? km : 0;
+    d.mode = $("mode").value;
+    d.clinic = $("clinic").checked ? 1 : 0;
+    d.co2 = computeCo2(d.pages, d.trips, d.km, d.mode).total;
+    saveState();
+    syncForm();
+    render();
+    toast("Saved to today's log.");
+  }
+
+  function clearToday() {
+    state.days[keyOffset(0)] = emptyDay();
+    saveState();
+    syncForm();
+    $("carbonError").textContent = "";
+    render();
+    toast("Today's entry cleared.");
+  }
+
+  /* ==================== charts ==================== */
+
+  var charts = {};
+
+  function colors() {
+    var cs = getComputedStyle(document.documentElement);
+    var g = function (n, fb) { return (cs.getPropertyValue(n) || "").trim() || fb; };
+    return { text: g("--muted", "#555"), grid: g("--border", "#ddd"), green: g("--green", "#246b45"), accent: g("--accent", "#79a86d"), dark: g("--dark-green", "#17452f") };
+  }
+
+  function fallbackBars(canvas, labels, values, color, textColor) {
+    var ctx = canvas.getContext && canvas.getContext("2d");
+    if (!ctx) return;
+    var parent = canvas.parentNode;
+    var w = parent.clientWidth || 300, h = parent.clientHeight || 200;
+    var ratio = window.devicePixelRatio || 1;
+    canvas.width = w * ratio; canvas.height = h * ratio;
+    canvas.style.width = w + "px"; canvas.style.height = h + "px";
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    var max = Math.max.apply(null, [1].concat(values));
+    var padd = 30, bw = (w - padd * 2) / values.length;
+    canvas._layout = { pad: padd, bw: bw, n: values.length };
+    ctx.font = "12px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    values.forEach(function (v, i) {
+      var bh = (h - padd * 2) * (v / max);
+      var x = padd + i * bw + bw * 0.15;
+      ctx.fillStyle = color;
+      ctx.fillRect(x, h - padd - bh, bw * 0.7, bh);
+      ctx.fillStyle = textColor;
+      ctx.fillText(labels[i], x + bw * 0.35, h - 10);
+      ctx.fillText(String(round2(v)), x + bw * 0.35, h - padd - bh - 6);
+    });
+  }
+
+  function drawChart(id, type, labels, values, datasetLabel) {
+    var canvas = $(id);
+    if (!canvas) return;
+    var c = colors();
+    if (typeof window.Chart === "undefined") {
+      fallbackBars(canvas, labels, values, c.green, c.text);
+      return;
+    }
+    try {
+      if (charts[id]) {
+        charts[id].data.labels = labels;
+        charts[id].data.datasets[0].data = values;
+        charts[id].update();
+        return;
+      }
+      var isDonut = type === "doughnut";
+      var dataset = { label: datasetLabel, data: values };
+      if (isDonut) {
+        dataset.backgroundColor = [c.green, c.accent, "#d9a441", "#4f8fb8"];
+        dataset.borderColor = "transparent";
+      } else if (type === "line") {
+        dataset.borderColor = c.green; dataset.backgroundColor = c.accent; dataset.tension = 0.3; dataset.fill = false; dataset.pointRadius = 4;
+      } else {
+        dataset.backgroundColor = c.green; dataset.borderRadius = 6;
+      }
+      var cfg = {
+        type: type,
+        data: { labels: labels, datasets: [dataset] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: isDonut, position: "bottom", labels: { color: c.text } } }
+        }
+      };
+      if (!isDonut) {
+        cfg.options.scales = {
+          y: { beginAtZero: true, ticks: { color: c.text, precision: 0 }, grid: { color: c.grid } },
+          x: { ticks: { color: c.text }, grid: { display: false } }
+        };
+        if (id === "chartCo2") cfg.options.scales.y.ticks = { color: c.text };
+      }
+      charts[id] = new window.Chart(canvas, cfg);
+    } catch (e) {
+      console.warn("Chart.js failed, using fallback chart.", e);
+      charts[id] = null;
+      fallbackBars(canvas, labels, values, c.green, c.text);
+    }
+  }
+
+  function chartIndexAt(id, ev) {
+    var c = $(id), ch = charts[id];
+    if (ch && ch.getElementsAtEventForMode) {
+      var els = ch.getElementsAtEventForMode(ev, "nearest", { intersect: false, axis: "x" }, true);
+      return els.length ? els[0].index : -1;
+    }
+    var m = c._layout;
+    if (!m) return -1;
+    var x = ev.clientX - c.getBoundingClientRect().left;
+    var i = Math.floor((x - m.pad) / m.bw);
+    return i >= 0 && i < m.n ? i : -1;
+  }
+  function onChartClick(id, kind, ev) {
+    if (id === "chartScore") { openDetail("score"); return; }
+    var i = chartIndexAt(id, ev);
+    if (i >= 0) openDay(lastDays(7)[i]); else openDetail(kind);
+  }
+
+  function destroyCharts() {
+    Object.keys(charts).forEach(function (k) { try { if (charts[k]) charts[k].destroy(); } catch (e) { /* ignore */ } });
+    charts = {};
+  }
+
+  /* ==================== render ==================== */
+
+  function renderBadges() {
+    var earned = earnedBadges(state.days);
+    var prog = badgeProgress(state.days);
+    var wrap = $("badges");
+    wrap.textContent = "";
+    D.badges.forEach(function (b) {
+      var pr = prog[b.id];
+      var pct = Math.min(100, Math.round(pr.value / pr.target * 100));
+      var node = el("button", "badge" + (earned[b.id] ? " earned" : ""));
+      node.type = "button";
+      node.setAttribute("data-badge", b.id);
+      node.setAttribute("aria-label", b.title + ": " + (earned[b.id] ? "earned" : pct + " percent"));
+      node.appendChild(el("div", "b-icon", b.icon));
+      node.appendChild(el("strong", null, b.title));
+      node.appendChild(el("small", null, earned[b.id] ? "Earned!" : b.desc));
+      var bar = el("div", "progress mini");
+      var fill = el("div", "progress-bar");
+      fill.style.width = (earned[b.id] ? 100 : pct) + "%";
+      bar.appendChild(fill);
+      node.appendChild(bar);
+      node.addEventListener("click", function () { openBadge(b.id); });
+      wrap.appendChild(node);
+    });
+  }
+
+  function render() {
+    var d = today();
+    var goal = D.dailyBreakGoal;
+    var wk = weekTotals(state.days);
+    var sc = computeScore(wk);
+
+    // hero
+    $("ringCount").textContent = d.breaks + "/" + goal;
+    $("ringFg").style.strokeDashoffset = String(326.7 * (1 - Math.min(d.breaks / goal, 1)));
+    $("heroScore").textContent = sc.total;
+    $("heroStreak").textContent = currentStreak(state.days);
+    $("heroCo2").textContent = round2(wk.co2).toFixed(2);
+    $("heroMessage").textContent = d.breaks === 0
+      ? "Small breaks can help build healthier work habits."
+      : d.breaks >= goal ? "Daily goal reached. Great job! 🎉"
+      : "Nice! " + (goal - d.breaks) + " more break" + (goal - d.breaks === 1 ? "" : "s") + " to reach today's goal.";
+
+    // dashboard cards
+    $("breakCount").textContent = d.breaks;
+    $("pageCount").textContent = wk.pages;
+    $("progressCarbon").textContent = round2(wk.co2).toFixed(2);
+    $("scoreBig").textContent = sc.total;
+    $("scoreLabel").textContent = sc.total < 25 ? "Just getting started" : sc.total < 50 ? "Building momentum" : sc.total < 75 ? "Great progress" : "Excellent!";
+
+    // carbon card
+    var parts = computeCo2(d.pages, d.trips, d.km, d.mode);
+    $("carbonResult").textContent = round2(d.co2).toFixed(2);
+    $("carbonDetails").textContent = d.co2 > 0
+      ? "Paper: " + round2(parts.paper).toFixed(2) + " kg CO₂e. Travel: " + round2(parts.travel).toFixed(2) + " kg CO₂e."
+      : "Enter your activities to calculate an estimate.";
+    $("weekCo2").textContent = round2(wk.co2).toFixed(2);
+    $("weekPages").textContent = wk.pages;
+    $("weekTrips").textContent = wk.trips;
+    $("weekClinic").textContent = wk.clinic;
+
+    // charts
+    var keys = lastDays(7);
+    var labels = keys.map(dayLabel);
+    drawChart("chartBreaks", "bar", labels, keys.map(function (k) { return state.days[k] ? state.days[k].breaks : 0; }), "Breaks");
+    drawChart("chartCo2", "line", labels, keys.map(function (k) { return state.days[k] ? round2(state.days[k].co2) : 0; }), "kg CO2e");
+    drawChart("chartScore", "doughnut", sc.parts.map(function (p) { return p.short; }), sc.parts.map(function (p) { return round2(p.points); }), "Points");
+
+    renderBadges();
+    renderInsights();
+    renderLog();
+    renderBanner();
+  }
+
+  /* ==================== data tools ==================== */
+
+  function askConfirm(message, onYes) {
+    toast(message, [{ label: "Yes", onClick: onYes }, { label: "Cancel", onClick: function () {} }], 12000);
+  }
+
+  function loadDemo() {
+    var hasData = Object.keys(state.days).some(function (k) { var x = state.days[k]; return x.breaks || x.pages || x.trips; });
+    if (hasData && !state.demo) {
+      askConfirm("Replace your saved progress with simulated demo data?", doLoadDemo);
+      return;
+    }
+    doLoadDemo();
+  }
+
+  function doLoadDemo() {
+    state.days = demoDays();
+    state.demo = true;
+    saveState();
+    syncForm();
+    render();
+    $("progressMessage").textContent = "Demo data loaded. These numbers are simulated for demonstration only.";
+  }
+
+  function resetAll() {
+    askConfirm("Reset all EcoErgo progress saved in this browser?", doReset);
+  }
+
+  function doReset() {
+    state.days = {};
+    state.demo = false;
+    saveState();
+    syncForm();
+    $("carbonError").textContent = "";
+    render();
+    $("progressMessage").textContent = "Your local progress has been reset.";
+  }
+
+  function exportCsv() {
+    var rows = [["date", "breaks", "pages_avoided", "trips_avoided", "km_per_trip", "mode", "co2e_kg_estimate", "clinic_visit_potential", "posture_checks", "posture_pct", "discomfort_before_avg", "discomfort_after_avg", "data_source"]];
+    Object.keys(state.days).sort().forEach(function (k) {
+      var d = state.days[k];
+      var avg = function (f) { return d.pain.length ? round2(d.pain.reduce(function (s, p) { return s + p[f]; }, 0) / d.pain.length) : ""; };
+      rows.push([k, d.breaks, d.pages, d.trips, d.km, d.mode, round2(d.co2), d.clinic, d.checks, d.checkPct, avg("before"), avg("after"), state.demo ? "demo-simulated" : "user-entered"]);
+    });
+    var csv = rows.map(function (r) { return r.join(","); }).join("\n");
+    $("csvText").value = csv;
+    $("csvBox").hidden = false;
+    try {
+      var blob = new Blob([csv], { type: "text/csv" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = "ecoergo-progress.csv";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      $("progressMessage").textContent = "CSV ready below. Copy it, or use the downloaded file if your browser saved one.";
+    } catch (e) {
+      $("progressMessage").textContent = "CSV ready below. Use Copy CSV.";
+    }
+  }
+
+  /* ==================== init ==================== */
+
+  function init() {
+    applyTheme();
+
+    // static text
+    $("year").textContent = new Date().getFullYear();
+    var f = D.factors;
+    $("factorNote").textContent = f.note + " Currently used: " + f.kgCO2ePerPage + " kg CO₂e per page; car " +
+      f.kgCO2ePerKm.car + ", two-wheeler " + f.kgCO2ePerKm.twoWheeler + ", bus " + f.kgCO2ePerKm.bus + " kg CO₂e per km.";
+    var rules = $("scoreRules");
+    Object.keys(D.score).forEach(function (k) {
+      var li = document.createElement("li");
+      li.textContent = D.score[k].label + ": up to " + D.score[k].max + " points (full marks at " + D.score[k].target + " per week)";
+      rules.appendChild(li);
+    });
+    var dayIdx = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+    tipIdx.posture = dayIdx % D.postureTips.length;
+    tipIdx.eco = dayIdx % D.ecoTips.length;
+    $("todayTip").textContent = "💡 Tip of the day: " + D.postureTips[tipIdx.posture];
+
+    // navigation
+    var nav = $("navigation");
+    $("menuBtn").addEventListener("click", function () {
+      var open = nav.classList.toggle("open");
+      $("menuBtn").setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    nav.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", function () { nav.classList.remove("open"); $("menuBtn").setAttribute("aria-expanded", "false"); });
+    });
+    $("themeBtn").addEventListener("click", function () {
+      state.settings.theme = effectiveTheme() === "dark" ? "light" : "dark";
+      saveState();
+      onThemeChanged();
+    });
+    if ("IntersectionObserver" in window) {
+      var links = {};
+      nav.querySelectorAll("a").forEach(function (a) { links[a.getAttribute("href").slice(1)] = a; });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting && links[en.target.id]) {
+            Object.keys(links).forEach(function (k) { links[k].classList.remove("active"); });
+            links[en.target.id].classList.add("active");
+          }
+        });
+      }, { rootMargin: "-40% 0px -55% 0px" });
+      Object.keys(links).forEach(function (id) { var s = $(id); if (s) io.observe(s); });
+    }
+
+    // exercises
+    renderFilters();
+    renderLibrary();
+    setSequence(D.routines[0].items, D.routines[0].id);
+    $("startTimer").addEventListener("click", startRunner);
+    $("resetTimer").addEventListener("click", resetRunner);
+    $("nextExercise").addEventListener("click", function () { stepRunner(1); });
+    $("prevExercise").addEventListener("click", function () { stepRunner(-1); });
+    ["painBefore", "painAfter"].forEach(function (id) {
+      $(id).addEventListener("input", function () {
+        $(id + "Val").textContent = $(id).value;
+        runner.painTouched = true;
+      });
+    });
+
+    // posture
+    initPosture();
+
+    // reminders
+    $("reminderInterval").value = String(state.settings.interval);
+    $("enableReminder").addEventListener("click", enableReminder);
+    $("disableReminder").addEventListener("click", disableReminder);
+    $("testReminder").addEventListener("click", fireReminder);
+    $("reminderInterval").addEventListener("change", function () {
+      state.settings.interval = remMinutes();
+      saveState();
+      if (rem.on) {
+        rem.nextAt = Date.now() + remMinutes() * 60000;
+        remStatus("Interval updated to " + remMinutes() + " minute" + (remMinutes() === 1 ? "" : "s") + ".");
+        renderCountdown();
+      }
+    });
+    $("newPostureTip").addEventListener("click", function () { tipIdx.posture++; renderTips(); });
+    $("newEcoTip").addEventListener("click", function () { tipIdx.eco++; renderTips(); });
+    renderTips();
+    renderCountdown();
+
+    // carbon
+    $("carbonForm").addEventListener("submit", submitCarbon);
+    $("clearToday").addEventListener("click", clearToday);
+    syncForm();
+
+    // dashboard
+    $("logBreak").addEventListener("click", function () {
+      today().breaks++;
+      saveState();
+      render();
+      $("progressMessage").textContent = "Movement break logged. Well done!";
+    });
+    $("logPages").addEventListener("click", function () {
+      var d = today();
+      d.pages += 10;
+      d.co2 = computeCo2(d.pages, d.trips, d.km, d.mode).total;
+      saveState();
+      syncForm();
+      render();
+      $("progressMessage").textContent = "Added 10 pages to today's log.";
+    });
+    $("loadDemo").addEventListener("click", loadDemo);
+    $("exportCsv").addEventListener("click", exportCsv);
+    $("copyCsv").addEventListener("click", function () {
+      var ta = $("csvText");
+      var fallback = function () { ta.focus(); ta.select(); $("progressMessage").textContent = "Text selected. Press copy on your keyboard."; };
+      try {
+        navigator.clipboard.writeText(ta.value).then(function () { toast("CSV copied."); }, fallback);
+      } catch (e) { fallback(); }
+    });
+    try {
+      new MutationObserver(function () { onThemeChanged(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    } catch (e) { /* optional */ }
+    $("resetProgress").addEventListener("click", resetAll);
+
+    // tap a chart bar or point to open that day (score chart opens the score breakdown)
+    [["chartBreaks", "breaks"], ["chartCo2", "co2"], ["chartScore", "score"]].forEach(function (p) {
+      var cv = $(p[0]);
+      if (cv) {
+        cv.addEventListener("click", function (ev) { onChartClick(p[0], p[1], ev); });
+        cv.title = "Tap to open details";
+      }
+    });
+
+    // library search, hero tip, modal, document-level clicks
+    $("libSearch").addEventListener("input", function () { libQuery = $("libSearch").value.trim(); renderLibrary(); });
+    $("heroTipBtn").addEventListener("click", function () {
+      tipIdx.posture++;
+      $("todayTip").textContent = "💡 Tip: " + D.postureTips[tipIdx.posture % D.postureTips.length];
+    });
+    $("modalClose").addEventListener("click", closeModal);
+    $("modalBackdrop").addEventListener("click", closeModal);
+    document.addEventListener("click", onDocumentClick);
+    document.addEventListener("keydown", onModalKey);
+
+    render();
+  }
+
+  // expose a few functions so the logic can be tested from the console
+  window.EcoErgo = {
+    computeCo2: computeCo2, computeScore: computeScore, weekTotals: weekTotals,
+    earnedBadges: earnedBadges, badgeProgress: badgeProgress, computeInsights: computeInsights, currentStreak: currentStreak, demoDays: demoDays,
+    getState: function () { return state; }, render: render
+  };
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+
+</script>
+
+</body></html>
